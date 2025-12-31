@@ -36,7 +36,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className=" bg-cyan-100 min-h-screen pb-[30px]">
+      <div className=" bg-cyan-100 h-auto pb-[60px]">
         <div className="w-full shadow-md mb-10">
           <div className="max-w-[1250px] mx-auto flex justify-between items-center py-[16px] ">
             <div

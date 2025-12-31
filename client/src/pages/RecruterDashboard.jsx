@@ -42,7 +42,7 @@ const stats = [
 
 const RecruiterDashboard = () => {
   return (
-    <div className="p-7 bg-gray-50 min-h-screen rounded">
+    <div className="p-7 bg-gray-50 h-auto rounded">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-800">
