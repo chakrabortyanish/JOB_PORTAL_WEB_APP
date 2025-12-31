@@ -1,0 +1,66 @@
+import bcrypt from 'bcrypt';
+import Recruiter from '../models/recruiters.js';
+import jwt from 'jsonwebtoken';
+
+const handleRecruiterRegistration = async (req, res) => {
+    try {
+    const { companyName, companyEmail, password, } = req.body;
+
+    const existing = await Recruiter.findOne({ email: companyEmail });
+    if (existing) return res.status(400).json({ message: 'Recruiter already registered', success: false });
+
+    const hashed = await bcrypt.hash(password, 10);
+
+    const rec = new Recruiter({
+      name:companyName,
+      email: companyEmail,
+      password: hashed,
+      image: req.file ? req.file.filename : null
+    });
+
+    await rec.save();
+    res.json({ message: 'Recruiter registered', success:true, recruiter: { id: rec._id, companyImage: rec.image? "yes": "No" } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  } 
+};
+
+const handleRecruiterLogin = async (req, res) => {
+  try {
+    const { companyEmail, password } = req.body;
+    const recruiter = await Recruiter.findOne({ email: companyEmail });
+    if (!recruiter) {
+      return res.status(400).json({ message: 'Invalid email or password', success: false });
+    }
+    const isMatch = await bcrypt.compare(password, recruiter.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid password', success: false });
+    }
+
+     const token = jwt.sign(
+      {
+        id: recruiter._id,
+        name: recruiter.name,
+        email: recruiter.email,
+      },
+      process.env.SECRET_KEY,
+      { expiresIn: "7d" }
+    );
+
+    const options = {
+      httpOnly: true,
+      /* secure: process.env.NODE_ENV === "production", // only true in production */
+      secure: true, // Required for HTTPS (Render)
+      sameSite: "none", // Required for cross-site cookies (Vercel -> Render)
+    };
+
+    res.status(200)
+    .cookie("R_Token", token, options)
+    .json({ message: 'Login successful', success: true, recruiter: { id: recruiter._id, companyName: recruiter.name, companyImage: recruiter.image} });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+export { handleRecruiterRegistration, handleRecruiterLogin };

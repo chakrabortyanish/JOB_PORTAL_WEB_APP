@@ -1,0 +1,153 @@
+import React, {useState} from "react";
+import logo from "../assets/job-logo-removebg-preview.png";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+
+import RecruiterProfileModal from "./RecruiterProfileModal";
+
+import addicon from "../assets/assets/add_icon.svg";
+import manage from "../assets/assets/home_icon.svg";
+import viewApplication from "../assets/assets/person_tick_icon.svg";
+import Footer from "../components/home/Footer";
+
+import { UserIcon } from "@heroicons/react/24/outline";
+
+const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+
+  const recruterId = localStorage.getItem("recruiterId") || null;
+  const CompanyImage = localStorage.getItem("CompanyImage") || null;
+
+  const recruiterData = {
+  name: recruterId,
+  email: "hr@technova.com",
+  image: CompanyImage,
+};
+
+  const logoutAccount = () => {
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    if (!confirmed) return;
+    localStorage.removeItem("recruiterId");
+    localStorage.removeItem("CompanyImage");
+    navigate("/");
+    window.location.reload();
+  };
+
+  return (
+    <>
+      <div className=" bg-cyan-100 min-h-screen pb-[30px]">
+        <div className="w-full shadow-md mb-10">
+          <div className="max-w-[1250px] mx-auto flex justify-between items-center py-[16px] ">
+            <div
+              className="flex items-center max-md:flex-col cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              <img src={logo} alt="Careeronix" className="w-15 h-10" />
+              <h2 className="title">Careeronix</h2>
+            </div>
+            <div className="flex justify-between items-center gap-2">
+              <div className="text-[16px] font-[500]">
+                Wellcome, <span className="text-blue-800">{recruterId}</span>
+              </div>
+              <div className="relative group">
+                <img
+                  src={`${
+                    import.meta.env.VITE_BACKEND_URL
+                  }/uploads/images/${CompanyImage}`}
+                  alt="profile icon"
+                  className="w-[40px] h-[40px] p-[5px] rounded-[50%] object-contain shadow-md  cursor-pointer"
+                />
+                {/* recruiter manage profile dropdown */}
+                <div className="hidden group-hover:block absolute button-0 pt-5 right-0 w-[150px] text-center font-[500] text-[14px]">
+                  <div className="flex flex-col bg-gray-50 rounded-xl  cursor-pointer shadow-lg">
+                    <button 
+                    onClick={()=> setOpen(true)}
+                    className="py-3 px-2 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-t-xl">
+                      My Profile
+                    </button>
+                    <button
+                      onClick={logoutAccount}
+                      className="py-3 px-2 hover:bg-gray-200 cursor-pointer rounded-b-xl"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="w-[1250px] mx-auto flex">
+          {/* left */}
+          <section className="flex flex-col gap-2 w-[230px] text-gray-700 font-[500] h-full">
+            <NavLink
+              to={"/dashboard"}
+              end
+              className={({ isActive }) =>
+                `flex items-center gap-2 w-full py-[8px] px-[20px] hover:bg-gray-200 ${
+                  isActive &&
+                  "bg-pink-100 border-r-4 border-pink-500 text-gray-800"
+                }`
+              }
+            >
+              <UserIcon class="h-6 w-6 font-extrabold text-black" />
+              Dashboard
+            </NavLink>
+            <NavLink
+              to={"/dashboard/add-job"}
+              className={({ isActive }) =>
+                `flex items-center gap-2 w-full py-[8px] px-[20px] hover:bg-gray-200 ${
+                  isActive &&
+                  "bg-pink-100 border-r-4 border-pink-500 text-gray-800"
+                }`
+              }
+            >
+              <img src={addicon} alt="addicon" className="w-[18px]" />
+              Add Job
+            </NavLink>
+            <NavLink
+              to={"/dashboard/manage-jobs"}
+              className={({ isActive }) =>
+                `flex items-center gap-2 w-full py-[8px] px-[20px] hover:bg-gray-200 ${
+                  isActive &&
+                  "bg-pink-100 border-r-4 border-pink-500 text-gray-800"
+                }`
+              }
+            >
+              <img src={manage} alt="manage" className="w-[18px]" />
+              Manage Jobs
+            </NavLink>
+            <NavLink
+              to={"/dashboard/view-application"}
+              className={({ isActive }) =>
+                `flex items-center gap-2 w-full py-[8px] px-[20px] hover:bg-gray-200 ${
+                  isActive &&
+                  "bg-pink-100 border-r-4 border-pink-500 text-gray-800"
+                }`
+              }
+            >
+              <img
+                src={viewApplication}
+                alt="viewApplication"
+                className="w-[18px]"
+              />
+              View Applications
+            </NavLink>
+          </section>
+          <section className="pl-7 pb-4">
+            <Outlet />
+          </section>
+        </div>
+      </div>
+      <Footer />
+      <RecruiterProfileModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        recruiter={recruiterData}
+      />
+    </>
+  );
+};
+
+export default Dashboard;
