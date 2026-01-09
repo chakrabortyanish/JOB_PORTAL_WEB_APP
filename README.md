@@ -79,12 +79,6 @@ Role-based permissions<br/>
 Pagination & search<br/>
 Analytics dashboard<br/>
 
-👨‍💻 Author<br/>
-
-Anish Chakraborty<br/>
-Full Stack Developer<br/>
-📧 Email: chakrabortyanish981@gmail.com<br/>
-
 ⭐ Support<br/>
 
 If you like this project, please ⭐ star the repository.<br/>
