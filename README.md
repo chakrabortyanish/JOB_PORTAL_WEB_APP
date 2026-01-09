@@ -19,7 +19,7 @@ Secure authentication<br/>
 Recruiter login & dashboard<br/>
 Create and manage job postings<br/>
 View job applications<br/>
-Manage candidate applications<br/>
+Manage candidate applications<br/> 
 
 🔐 Authentication & Security<br/>
 
