@@ -9,7 +9,7 @@ LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
 
 👤 Candidate<br/>
 
-Browse available jobs<br/>
+Browse available jobs<br/> 
 Apply for jobs<br/>
 View applied job status<br/>
 Secure authentication<br/>
