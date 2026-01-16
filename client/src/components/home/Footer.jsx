@@ -39,6 +39,7 @@ const Footer = () => {
             <li><FaLinkedin /></li>
           </ul>
         </div>
+        <p className="text-right mt-5 text-gray-500">©<span className="font-bold">{new Date().getFullYear()}</span> Careeronix. All rights reserved.</p>
       </div>
     </div>
   );

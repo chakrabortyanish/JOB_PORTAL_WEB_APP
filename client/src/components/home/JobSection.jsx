@@ -80,7 +80,7 @@ const JobSection = () => {
 
   return (
     <div className="w-full h-auto p-5">
-      <div className="flex justify-between ">
+      <div className="flex justify-between max-md:flex-col gap-5">
         <div className="w-[280px] font-['Roboto']">
           {" "}
           {/* left content */}

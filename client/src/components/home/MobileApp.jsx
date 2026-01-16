@@ -7,8 +7,8 @@ const MobileApp = () => {
   return (
     <div className="px-2">
       <div id="mobile" className="relative w-full max-w-[1200px] mx-auto bg-cyan-200 h-[400px] my-[50px] flex justify-center max-sm:h-[220px] text-center rounded-[8px]">
-      <div className="b-s-1"></div>
-      <div className="b-s-2"></div>
+      <div className="b-s-1 max-sm:hidden"></div>
+      <div className="b-s-2 max-sm:hidden"></div>
       <div className=" max-w-[800px] flex  h-full gap-8 p-5 max-md:gap-3">
         <div className="flex flex-col items-center justify-center max-w-[400px]">
           <h2 className="text-[2rem] font-semibold max-md:text-[1.5rem] max-sm:text-[1.2rem]">
