@@ -1,15 +1,15 @@
-# JOB_PORTAL_WEB_APP
+# CAREERONIX
 A Job Portal web application currently under development. 
 The project focuses on building a secure recruiter dashboard, authentication system, and scalable backend architecture. 
 Candidate-side features such as job browsing and applications are planned and under active development.<br/>
 
-LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
+## LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
 
 🚀 Features<br/>
 
 👤 Candidate<br/>
 
-Browse available jobs<br/>
+Browse available jobs<br/> 
 Apply for jobs<br/>
 View applied job status<br/>
 Secure authentication<br/>
@@ -19,7 +19,7 @@ Secure authentication<br/>
 Recruiter login & dashboard<br/>
 Create and manage job postings<br/>
 View job applications<br/>
-Manage candidate applications<br/>
+Manage candidate applications<br/> 
 
 🔐 Authentication & Security<br/>
 
@@ -78,12 +78,6 @@ Admin panel<br/>
 Role-based permissions<br/>
 Pagination & search<br/>
 Analytics dashboard<br/>
-
-👨‍💻 Author<br/>
-
-Anish Chakraborty<br/>
-Full Stack Developer<br/>
-📧 Email: chakrabortyanish981@gmail.com<br/>
 
 ⭐ Support<br/>
 
