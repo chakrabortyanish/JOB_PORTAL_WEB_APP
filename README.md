@@ -3,7 +3,7 @@ A Job Portal web application currently under development.
 The project focuses on building a secure recruiter dashboard, authentication system, and scalable backend architecture. 
 Candidate-side features such as job browsing and applications are planned and under active development.<br/>
 
-LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
+## LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
 
 🚀 Features<br/>
 
