@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import logo from "../assets/job-logo-removebg-preview.png";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
@@ -11,6 +11,9 @@ import Footer from "../components/home/Footer";
 
 import { UserIcon } from "@heroicons/react/24/outline";
 
+import { MdArrowDropDown } from "react-icons/md";
+import { MdArrowDropUp } from "react-icons/md";
+
 const Dashboard = () => {
   const navigate = useNavigate();
 
@@ -20,10 +23,10 @@ const Dashboard = () => {
   const CompanyImage = localStorage.getItem("CompanyImage") || null;
 
   const recruiterData = {
-  name: recruterId,
-  email: "hr@technova.com",
-  image: CompanyImage,
-};
+    name: recruterId,
+    email: "hr@technova.com",
+    image: CompanyImage,
+  };
 
   const logoutAccount = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
@@ -33,6 +36,8 @@ const Dashboard = () => {
     navigate("/");
     window.location.reload();
   };
+
+  const [handleManage, setHandleManage] = useState(false);
 
   return (
     <>
@@ -59,13 +64,42 @@ const Dashboard = () => {
                   className="w-[40px] h-[40px] p-[5px] rounded-[50%] object-contain shadow-md  cursor-pointer"
                 />
                 {/* recruiter manage profile dropdown */}
-                <div className="hidden group-hover:block absolute button-0 pt-5 right-0 w-[150px] text-center font-[500] text-[14px]">
+                <div className=" group-hover:block absolute button-0 pt-5 right-0 w-[250px] text-center font-[500] text-[14px]">
                   <div className="flex flex-col bg-gray-50 rounded-xl  cursor-pointer shadow-lg">
-                    <button 
-                    onClick={()=> setOpen(true)}
-                    className="py-3 px-2 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-t-xl">
+                    <button
+                      onClick={() => setOpen(true)}
+                      className="py-3 px-2 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-t-xl"
+                    >
                       My Profile
                     </button>
+                    {/* manage profile */}
+                    <div className="flex flex-col">
+                      <button
+                        onClick={() => {
+                          setHandleManage((pre) => !pre);
+                        }}
+                        className="flex justify-center gap-1.5 py-3 hover:bg-gray-200 cursor-pointer"
+                      >
+                        Manage Account
+                        <span>
+                          {handleManage ? (
+                            <MdArrowDropUp size={23}/>
+                          ) : (
+                            <MdArrowDropDown size={23} />
+                          )}
+                        </span>
+                      </button>
+                      {handleManage && (
+                        <div className="flex flex-col">
+                          <button className="py-2 hover:bg-gray-200 cursor-pointer">
+                            Edit Account
+                          </button>
+                          <button className="py-2 hover:bg-gray-200 text-red-600 cursor-pointer">
+                            Delete Account
+                          </button>
+                        </div>
+                      )}
+                    </div>
                     <button
                       onClick={logoutAccount}
                       className="py-3 px-2 hover:bg-gray-200 cursor-pointer rounded-b-xl"
