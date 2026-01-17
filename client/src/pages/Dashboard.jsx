@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import logo from "../assets/job-logo-removebg-preview.png";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
@@ -13,18 +13,18 @@ import { UserIcon } from "@heroicons/react/24/outline";
 
 import { MdArrowDropDown } from "react-icons/md";
 import { MdArrowDropUp } from "react-icons/md";
+import { JobContext } from "../context/JobContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-
-  const recruterId = localStorage.getItem("recruiterId") || null;
+  const recruiterName = localStorage.getItem("recruiterName") || null;
+  const recruiterEmail = localStorage.getItem("recruiterEmail") || null;
   const CompanyImage = localStorage.getItem("CompanyImage") || null;
 
   const recruiterData = {
-    name: recruterId,
-    email: "hr@technova.com",
+    name: recruiterName,
+    email: recruiterEmail,
     image: CompanyImage,
   };
 
@@ -38,6 +38,14 @@ const Dashboard = () => {
   };
 
   const [handleManage, setHandleManage] = useState(false);
+
+  // use edit context for profile
+  const { setEditMode, openProfile, setOpenProfile } = useContext(JobContext);
+
+  function manageRecruiterProfile(){
+    setEditMode(true);
+    setOpenProfile(true);
+  }
 
   return (
     <>
@@ -53,21 +61,26 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between items-center gap-2">
               <div className="text-[16px] font-[500]">
-                Wellcome, <span className="text-blue-800">{recruterId}</span>
+                Wellcome, <span className="text-blue-800">{recruiterName}</span>
               </div>
               <div className="relative group">
-                <img
-                  src={`${
-                    import.meta.env.VITE_BACKEND_URL
-                  }/uploads/images/${CompanyImage}`}
-                  alt="profile icon"
-                  className="w-[40px] h-[40px] p-[5px] rounded-[50%] object-contain shadow-md  cursor-pointer"
-                />
+                <div className="flex items-center gap-[2px] cursor-pointer">
+                  <img
+                    src={`${
+                      import.meta.env.VITE_BACKEND_URL
+                    }/uploads/images/${CompanyImage}`}
+                    alt="profile icon"
+                    className=" w-[40px] h-[40px] p-[2px] rounded-[50%] object-contain shadow-md  cursor-pointer"
+                  />
+                  <span>
+                    <MdArrowDropDown size={20} />
+                  </span>
+                </div>
                 {/* recruiter manage profile dropdown */}
-                <div className=" group-hover:block absolute button-0 pt-5 right-0 w-[250px] text-center font-[500] text-[14px]">
+                <div className="hidden group-hover:block absolute button-0 pt-5 right-0 w-[250px] text-center font-[500] text-[14px]">
                   <div className="flex flex-col bg-gray-50 rounded-xl  cursor-pointer shadow-lg">
                     <button
-                      onClick={() => setOpen(true)}
+                      onClick={() => {setOpenProfile(true); setEditMode(false)}}
                       className="py-3 px-2 bg-gray-100 hover:bg-gray-200 cursor-pointer rounded-t-xl"
                     >
                       My Profile
@@ -83,7 +96,7 @@ const Dashboard = () => {
                         Manage Account
                         <span>
                           {handleManage ? (
-                            <MdArrowDropUp size={23}/>
+                            <MdArrowDropUp size={23} />
                           ) : (
                             <MdArrowDropDown size={23} />
                           )}
@@ -91,7 +104,10 @@ const Dashboard = () => {
                       </button>
                       {handleManage && (
                         <div className="flex flex-col">
-                          <button className="py-2 hover:bg-gray-200 cursor-pointer">
+                          <button
+                            onClick={manageRecruiterProfile}
+                            className="py-2 hover:bg-gray-200 cursor-pointer"
+                          >
                             Edit Account
                           </button>
                           <button className="py-2 hover:bg-gray-200 text-red-600 cursor-pointer">
@@ -175,11 +191,7 @@ const Dashboard = () => {
         </div>
       </div>
       <Footer />
-      <RecruiterProfileModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
-        recruiter={recruiterData}
-      />
+      {openProfile ? <RecruiterProfileModal recruiter={recruiterData} /> : null}
     </>
   );
 };

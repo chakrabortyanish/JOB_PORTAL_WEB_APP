@@ -61,7 +61,8 @@ const RecruterLogin = () => {
       // console.log("message: ", message, success);
       if (success) {
         showSuccess(message);
-        localStorage.setItem("recruiterId", result.recruiter.companyName);
+        localStorage.setItem("recruiterName", result.recruiter.companyName);
+        localStorage.setItem("recruiterEmail", result.recruiter.email);
         localStorage.setItem("CompanyImage", result.recruiter.companyImage);
         setTimeout(() => {
           navigator("/dashboard");
@@ -85,11 +86,12 @@ const RecruterLogin = () => {
           }
         );
         const result = await response.json();
-        const { message, success } = result;
+        const { message, success, token } = result;
         // console.log("message: ", message, success);
         if (success) {
           showSuccess(message);
           setMode("login");
+          localStorage.setItem("tokenId", token);
         } else if (success === false) {
           showWarning(message);
           setMode("login");

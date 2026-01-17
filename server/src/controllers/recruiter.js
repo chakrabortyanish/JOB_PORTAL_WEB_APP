@@ -57,10 +57,28 @@ const handleRecruiterLogin = async (req, res) => {
 
     res.status(200)
     .cookie("R_Token", token, options)
-    .json({ message: 'Login successful', success: true, recruiter: { id: recruiter._id, companyName: recruiter.name, companyImage: recruiter.image} });
+    .json({ message: 'Login successful', token, success: true, recruiter: { id: recruiter._id, companyName: recruiter.name, email: recruiter.email, companyImage: recruiter.image} });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-export { handleRecruiterRegistration, handleRecruiterLogin };
+const handleRecruiterEdit = async (req, res) => {
+  // Implementation for editing recruiter details
+   const { name, email } = req.body;
+
+  try {
+    const updatedUser = await Recruiter.findByIdAndUpdate(
+      req.userId,                  // 🔐 from JWT
+      { $set: { name, email } },    // ❌ no password update
+      { new: true }
+    ).select("-password");
+
+    console.log("Updated User:", updatedUser);
+    res.status(200).json({ message: "Profile updated", success:true, user: updatedUser });
+  } catch (err) {
+    res.status(500).json({ message: "Update failed" });
+  }
+}
+
+export { handleRecruiterRegistration, handleRecruiterLogin, handleRecruiterEdit }; 

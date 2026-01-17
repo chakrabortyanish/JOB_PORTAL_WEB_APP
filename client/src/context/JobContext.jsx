@@ -16,6 +16,10 @@ export const JobContextProvider = ({ children }) => {
 
   const [showRecruterLogin, setShowRecruterLogin] = useState(false);
 
+  // recruiter profile manage
+  const [editMode, setEditMode] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+
   useEffect(() => {
      setJobs(jobsData)
   },[])
@@ -27,7 +31,9 @@ export const JobContextProvider = ({ children }) => {
     searchJob, setSearchJob,
     isSearched, setIsSearched,
     jobs, setJobs,
-    showRecruterLogin, setShowRecruterLogin
+    showRecruterLogin, setShowRecruterLogin,
+    editMode, setEditMode,
+    openProfile, setOpenProfile
   }
   
     return (
