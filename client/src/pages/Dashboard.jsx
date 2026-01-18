@@ -14,6 +14,8 @@ import { UserIcon } from "@heroicons/react/24/outline";
 import { MdArrowDropDown } from "react-icons/md";
 import { MdArrowDropUp } from "react-icons/md";
 import { JobContext } from "../context/JobContext";
+import { showSuccess } from "../utils/toast";
+import { ToastContainer } from "react-toastify";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -45,6 +47,34 @@ const Dashboard = () => {
   function manageRecruiterProfile(){
     setEditMode(true);
     setOpenProfile(true);
+  }
+
+  function deleteRecruiterAccount(){
+    const confirmed = window.confirm("Are you sure you want to delete your account?");
+    if (!confirmed) return;
+
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/recruiter/deleteprofile`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if(data.success){
+        showSuccess("Account deleted successfully");
+        localStorage.removeItem("recruiterName");
+        localStorage.removeItem("recruiterEmail");
+        localStorage.removeItem("CompanyImage");
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload();
+        }, 2000);
+      } else {
+        alert("Failed to delete account: " + data.message);
+      }
+    })
   }
 
   return (
@@ -110,7 +140,9 @@ const Dashboard = () => {
                           >
                             Edit Account
                           </button>
-                          <button className="py-2 hover:bg-gray-200 text-red-600 cursor-pointer">
+                          <button
+                          onClick={deleteRecruiterAccount}
+                           className="py-2 hover:bg-gray-200 text-red-600 cursor-pointer">
                             Delete Account
                           </button>
                         </div>
@@ -192,6 +224,8 @@ const Dashboard = () => {
       </div>
       <Footer />
       {openProfile ? <RecruiterProfileModal recruiter={recruiterData} /> : null}
+
+      <ToastContainer/>
     </>
   );
 };

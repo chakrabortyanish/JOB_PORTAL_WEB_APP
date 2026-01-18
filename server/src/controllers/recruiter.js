@@ -69,8 +69,8 @@ const handleRecruiterEdit = async (req, res) => {
 
   try {
     const updatedUser = await Recruiter.findByIdAndUpdate(
-      req.userId,                  // 🔐 from JWT
-      { $set: { name, email } },    // ❌ no password update
+      req.userId,                  // from JWT
+      { $set: { name, email } },    // password update
       { new: true }
     ).select("-password");
 
@@ -81,4 +81,14 @@ const handleRecruiterEdit = async (req, res) => {
   }
 }
 
-export { handleRecruiterRegistration, handleRecruiterLogin, handleRecruiterEdit }; 
+const handleRecruiterDelete = async (req, res) => {
+  // Implementation for deleting recruiter profile
+  try { 
+    await Recruiter.findByIdAndDelete(req.userId); // 🔐 from JWT
+    res.status(200).json({ message: "Profile deleted", success:true });
+  } catch (err) {
+    res.status(500).json({ message: "Deletion failed" });
+  }
+};
+
+export { handleRecruiterRegistration, handleRecruiterLogin, handleRecruiterEdit, handleRecruiterDelete }; 
