@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from "react";
-import { jobsData } from "../assets/assets/assets";
+// import { jobsData } from "../assets/assets/assets";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const JobContext = createContext();
 
 export const JobContextProvider = ({ children }) => {
-
   const [searchJob, setSearchJob] = useState({
-    role : "",
+    role: "",
     location: "",
   });
-  const [isSearched, setIsSearched] = useState(true)
+  const [isSearched, setIsSearched] = useState(true);
 
-  const [jobs, setJobs] = useState([])
+  const [jobs, setJobs] = useState([]);
 
   const [showRecruterLogin, setShowRecruterLogin] = useState(false);
 
@@ -21,24 +21,29 @@ export const JobContextProvider = ({ children }) => {
   const [openProfile, setOpenProfile] = useState(false);
 
   useEffect(() => {
-     setJobs(jobsData)
-  },[])
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`)
+    .then((res) => res.json())
+    .then((data) => setJobs(data))
+    .catch(console.error);
+}, [searchJob]);
 
   // console.log("Jobs in Context:", jobs);
   // console.log("search job:", searchJob);
 
   const value = {
-    searchJob, setSearchJob,
-    isSearched, setIsSearched,
-    jobs, setJobs,
-    showRecruterLogin, setShowRecruterLogin,
-    editMode, setEditMode,
-    openProfile, setOpenProfile
-  }
-  
-    return (
-    <JobContext.Provider value={value}>
-      {children}
-    </JobContext.Provider>
-    )    
-}
+    searchJob,
+    setSearchJob,
+    isSearched,
+    setIsSearched,
+    jobs,
+    setJobs,
+    showRecruterLogin,
+    setShowRecruterLogin,
+    editMode,
+    setEditMode,
+    openProfile,
+    setOpenProfile,
+  };
+
+  return <JobContext.Provider value={value}>{children}</JobContext.Provider>;
+};

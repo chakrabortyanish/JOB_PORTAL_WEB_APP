@@ -14,6 +14,8 @@ const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user } = useUser();
 
+  // console.log("Navbar user:", user.id);
+
   const handleNavigate = () => {
     navigate("/application");
   };

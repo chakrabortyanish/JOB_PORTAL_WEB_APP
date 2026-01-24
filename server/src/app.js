@@ -4,7 +4,11 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+import { clerkMiddleware } from "@clerk/express";
+
 import recruiterRouter from "./routes/recruiters.js";
+import jobRouter from "./routes/job.routes.js";
+import applicationRouter from "./routes/application.routes.js";
 import path from "path";
 
 export const app = express();
@@ -22,6 +26,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/uploads", express.static(path.join(process.cwd(), "src", "uploads")));
 app.use(cookieParser());
+app.use(clerkMiddleware());
 
 //routes
 app.use("/api/recruiter", recruiterRouter);
+app.use("/api/jobs", jobRouter);
+app.use("/api/applications", applicationRouter);

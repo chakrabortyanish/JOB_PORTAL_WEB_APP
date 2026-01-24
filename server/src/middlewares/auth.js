@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import Recruiter from "../models/recruiters.js";
 
 const verifyToken = (req, res, next) => {
-  console.log("req.cookies:", req.cookies.R_Token);
+  // console.log("req.cookies:", req.cookies.R_Token);
   // console.log("req.headers['authorization']:", req.headers["authorization"]);
 
   let R_Token;
