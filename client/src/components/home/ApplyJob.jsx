@@ -42,7 +42,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
         showSuccess("Job applied successfully!");
         setTimeout(()=>{
           window.location.reload();
-        }, 2000)
+        }, 4000)
       })
       .catch((err) => {
         console.error("Error applying for job:", err);
@@ -109,7 +109,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
             </div>
             {/* Apply button */}
             <div className="flex flex-col place-items-end gap-1">
-              {/* {appliedjobs.some(
+              {appliedjobs.some(
                 (appliedJob) => appliedJob.jobId._id === job._id,
               ) ? (
                 <button
@@ -127,7 +127,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
               >
                 Apply Now
               </button>
-              )} */}
+              )}
               
               <p className="text-[13px] font-[600] text-gray-700">
                 Posted {new Date(job.createdAt).toLocaleDateString()}

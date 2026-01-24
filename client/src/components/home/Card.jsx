@@ -20,7 +20,7 @@ const Card = ({ job }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("Jobs applied data:", data);
+          // console.log("Jobs applied data:", data);
           setAppliedjobs(data);
         })
         .catch((err) => {
