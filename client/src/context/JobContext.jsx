@@ -12,6 +12,7 @@ export const JobContextProvider = ({ children }) => {
   });
   const [isSearched, setIsSearched] = useState(true);
 
+  const [originalJobs, setOriginalJobs] = useState([]);
   const [jobs, setJobs] = useState([]);
 
   const [showRecruterLogin, setShowRecruterLogin] = useState(false);
@@ -20,12 +21,20 @@ export const JobContextProvider = ({ children }) => {
   const [editMode, setEditMode] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
 
-  useEffect(() => {
+  /* useEffect(() => {
   fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`)
     .then((res) => res.json())
     .then((data) => setJobs(data))
     .catch(console.error);
-}, [searchJob]);
+}, [searchJob]); */
+
+const fetchJobs = async () => {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`);
+    const data = await res.json();
+
+    setOriginalJobs(data); // source of truth
+    setJobs(data);         // display list
+  };
 
   // console.log("Jobs in Context:", jobs);
   // console.log("search job:", searchJob);
@@ -37,6 +46,8 @@ export const JobContextProvider = ({ children }) => {
     setIsSearched,
     jobs,
     setJobs,
+    fetchJobs,
+    originalJobs,
     showRecruterLogin,
     setShowRecruterLogin,
     editMode,

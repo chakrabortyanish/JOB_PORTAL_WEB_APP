@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from "react";
 import ApplyJob from "./ApplyJob";
 
-import { useAuth } from "@clerk/clerk-react";
+// import { useAuth } from "@clerk/clerk-react";
 
 const Card = ({ job }) => {
   const [selectedJob, setSelectedJob] = useState();
   const [appliedjobs, setAppliedjobs] = useState([]);
 
-   const { getToken } = useAuth();
+   /* const { getToken } = useAuth();
 
   async function appliedJobs() {
       const token = await getToken();
@@ -30,7 +30,7 @@ const Card = ({ job }) => {
   
     useEffect(() => {
       appliedJobs();
-    }, []);
+    }, []); */
 
   return (
     <>

@@ -11,7 +11,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { JobContext } from "../../context/JobContext";
 import Card from "./Card.jsx";
 
-import { jobsData } from "../../assets/assets/assets.js";
+// import { jobsData } from "../../assets/assets/assets.js";
 import { JobCategories } from "../../assets/assets/assets.js";
 import { JobLocations } from "../../assets/assets/assets.js";
 
@@ -19,8 +19,12 @@ const JobSection = () => {
   const [displayFilter, setDisplayFilter] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { searchJob, setSearchJob, isSearched, jobs, setJobs } =
+  const { searchJob, setSearchJob, isSearched, jobs, setJobs, originalJobs, fetchJobs } =
     React.useContext(JobContext);
+
+    useEffect(() => {
+    fetchJobs();   // 🔥 fetch from DB
+  }, []);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
@@ -47,35 +51,43 @@ const JobSection = () => {
   };
 
   useEffect(() => {
-    if (selectedCategories.length !== 0 || selectedLocations.length !== 0) {
-      // Filter jobs
-      const filtered = jobsData.filter((item) => {
-        const categoryMatch =
-          selectedCategories.length === 0 ||
-          selectedCategories.includes(item.title); // Use category
+  let filteredJobs = originalJobs;
 
-        const locationMatch =
-          selectedLocations.length === 0 ||
-          selectedLocations.includes(item.location); // Use location
+  // filter by category
+  if (selectedCategories.length > 0) {
+    filteredJobs = filteredJobs.filter(job =>
+      selectedCategories.includes(job.title)
+    );
+  }
 
-        return categoryMatch && locationMatch;
-      });
+  // filter by location
+  if (selectedLocations.length > 0) {
+    filteredJobs = filteredJobs.filter(job =>
+      selectedLocations.includes(job.location)
+    );
+  }
 
-      console.log("Filtered Jobs:", filtered);
+  // filter by search
+  if (searchJob.role) {
+    filteredJobs = filteredJobs.filter(job =>
+      job.title.toLowerCase().includes(searchJob.role.toLowerCase())
+    );
+  }
 
-      setJobs(filtered);
-    } else {
-      // Reset when everything is empty
-      if (
-        !searchJob.role &&
-        !searchJob.location &&
-        !selectedCategories.length &&
-        !selectedLocations.length
-      ) {
-        setJobs(jobsData);
-      }
-    }
-  }, [selectedCategories, selectedLocations, searchJob]);
+  if (searchJob.location) {
+    filteredJobs = filteredJobs.filter(job =>
+      job.location.toLowerCase().includes(searchJob.location.toLowerCase())
+    );
+  }
+
+  setJobs(filteredJobs);
+  setCurrentPage(1); // reset pagination
+}, [
+  selectedCategories,
+  selectedLocations,
+  searchJob,
+  originalJobs,
+]);
   // console.log("role ", searchJob.role);
 
   return (

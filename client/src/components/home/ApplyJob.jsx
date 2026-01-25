@@ -4,12 +4,14 @@ import "./style.css"; // Assuming you have a styles.css file for custom styles
 import { IoLocationSharp } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useClerk  } from "@clerk/clerk-react";
 import { showSuccess } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
 
 const ApplyJob = ({ job, onClose, appliedjobs }) => {
-  const { getToken } = useAuth();
+  const { getToken, isSignedIn } = useAuth();
+  const { openSignIn } = useClerk();
+  
   const ApplyJob = useRef(null);
   console.log(job);
 
@@ -28,6 +30,10 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
   }, []);
 
   const jobApply = async (id) => {
+    if (!isSignedIn) {
+    openSignIn(); // or show login modal
+    return;
+  }
     const token = await getToken();
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications`, {
       method: "POST",
@@ -38,7 +44,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
       body: JSON.stringify({ jobId: id }),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(() => {
         showSuccess("Job applied successfully!");
         setTimeout(()=>{
           window.location.reload();
