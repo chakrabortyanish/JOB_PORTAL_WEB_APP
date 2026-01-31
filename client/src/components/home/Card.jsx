@@ -17,7 +17,7 @@ const Card = ({ job }) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-        },
+        }, 
       })
         .then((res) => res.json())
         .then((data) => {
