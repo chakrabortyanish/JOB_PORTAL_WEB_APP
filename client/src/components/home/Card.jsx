@@ -36,7 +36,6 @@ const Card = ({ job }) => {
   return (
     <>
       <div className="h-[320px] relative bg-white p-5 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-        {/* <img src={""} alt="" className="w-[40px] mb-1" /> */}
         <div className="w-full flex justify-between">
           <h3 className="text-xl font-semibold">{job.title}</h3>
           <img src={job.companyLogo} alt="company-logo" className="w-[30px] h-[15px]"/>
