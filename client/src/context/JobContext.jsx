@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { createContext, useState } from "react";
 // import { jobsData } from "../assets/assets/assets";
 

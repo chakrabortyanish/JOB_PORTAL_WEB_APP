@@ -13,7 +13,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
   const { openSignIn } = useClerk();
   
   const ApplyJob = useRef(null);
-  console.log(job);
+  // console.log(job);
 
   const handleClickOutside = (e) => {
     if (!ApplyJob.current.contains(e.target)) {
