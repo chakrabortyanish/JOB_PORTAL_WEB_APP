@@ -1,9 +1,12 @@
 import React, { useMemo, useState } from "react";
 import cv from "../assets/Anish Chakraborty_CV.pdf"
+import { useEffect } from "react";
 
 export default function ViewApplications() {
+
+   const [applications, setApplications] = useState([]);
   // sample data - replace with API data
-  const initialData = [
+ /*  const initialData = [
     {
       id: 1,
       userName: "Anish Chakraborty",
@@ -29,8 +32,26 @@ export default function ViewApplications() {
       appliedAt: "2025-11-25",
     },
   ];
+ */
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications/received`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        //Authorization: `Bearer ${localStorage.getItem("R_Token")}`, // send token in header for authentication
+      },
+      credentials: "include" // send cookies for authentication
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Received applications data:", data.applications);
+        setApplications(data?.applications || []); // assuming API returns { applications: [...] }
+      })
+      .catch((err) => {
+        console.error("Error fetching received applications:", err);
+      });
+  }, []);
 
-  const [applications, setApplications] = useState(initialData);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 5;
@@ -41,11 +62,13 @@ export default function ViewApplications() {
     const q = query.toLowerCase();
     return applications.filter(
       (a) =>
-        a.userName.toLowerCase().includes(q) ||
-        a.jobTitle.toLowerCase().includes(q) ||
-        a.location.toLowerCase().includes(q)
+        a.candidate?.name.toLowerCase().includes(q) ||
+        a.jobId?.title.toLowerCase().includes(q) ||
+        a.jobId?.location.toLowerCase().includes(q)
     );
   }, [applications, query]);
+
+  console.log("filtered applications: ", filtered);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
@@ -65,6 +88,8 @@ export default function ViewApplications() {
     a.click();
     a.remove();
   }
+
+  console.log("Filtered applications: ", applications);
 
   return (
     <div className="p-0">
@@ -100,7 +125,7 @@ export default function ViewApplications() {
           </thead>
 
           <tbody className="divide-y">
-            {paged.length === 0 ? (
+            {filtered.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-20 text-center text-gray-400">
                   No applications found
@@ -108,25 +133,26 @@ export default function ViewApplications() {
               </tr>
             ) : (
               paged.map((app) => (
-                <tr key={app.id} className="hover:bg-gray-50">
+                <tr key={app._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
-                        {app.userName.split(" ").map(n => n[0]).slice(0,2).join("")}
+                        {/* {app.userName.split(" ").map(n => n[0]).slice(0,2).join("") || "NA"} */}
+                        <img src={app.candidate?.image} alt={app.candidate?.name || "Candidate"} className="h-10 w-10 rounded-full object-cover" />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">{app.userName}</div>
-                        <div className="text-sm text-gray-500">Applied: {app.appliedAt}</div>
+                        <div className="font-medium text-gray-900">{app.candidate?.name}</div>
+                        <div className="text-sm text-gray-500">Applied: {new Date(app.createdAt).toLocaleDateString()}</div>
                       </div>
                     </div>
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-gray-900 font-medium">{app.jobTitle}</div>
-                    <div className="text-sm text-gray-500">ID: {app.id}</div>
+                    <div className="text-gray-900 font-medium">{app.jobId.title}</div>
+                    {/* <div className="text-sm text-gray-500">ID: {app.id}</div> */}
                   </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{app.location}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{app.jobId.location}</td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">

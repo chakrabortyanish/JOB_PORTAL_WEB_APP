@@ -32,16 +32,56 @@ export const getMyApplications = async (req, res) => {
   }).populate("jobId");
 
   // console.log("Applied jobs: ",apps);
-  res.json(apps);
+  res.status(200).json(apps);
 };
 
 /* Recruiter received applications */
-export const getReceivedApplications = async (req, res) => {
-  const apps = await Application.find({
-    recruiterId: req.user.id
-  }).populate("jobId");
+import { clerkClient } from  "@clerk/express";
 
-  res.json(apps);
+export const getReceivedApplications = async (req, res) => {
+  try {
+    const allApplications = await Application.find({
+      recruiterId: req.userId,
+    }).populate("jobId");
+
+    // Extract unique candidateIds
+    const candidateIds = [
+      ...new Set(allApplications.map(app => app.candidateId))
+    ];
+
+    // Fetch users from Clerk in one request
+    const usersResponse = await clerkClient.users.getUserList({
+      userId: candidateIds,
+    });
+
+    const users = usersResponse.data;
+
+    // Map users by ID for fast lookup
+    const userMap = {};
+    users.forEach(user => {
+      userMap[user.id] = {
+        name: `${user.firstName || ""} ${user.lastName || ""}`.trim(),
+        email: user.emailAddresses[0]?.emailAddress,
+        image: user.imageUrl,
+      };
+    });
+
+    // Attach candidate info to applications
+    const applicationsWithUsers = allApplications.map(app => ({
+      ...app._doc,
+      candidate: userMap[app.candidateId] || null,
+    }));
+
+    res.status(200).json({
+      applications: applicationsWithUsers,
+      message: "Applications retrieved successfully",
+      success: true,
+    });
+
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
 };
 
 /* Recruiter update status */

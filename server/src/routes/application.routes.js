@@ -6,12 +6,13 @@ import {
   updateApplicationStatus
 } from "../controllers/application.controller.js";
 import { protectUser } from "../middlewares/clerkAuth.middleware.js";
+import { verifyToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
 router.post("/", protectUser, applyJob);
 router.get("/my", protectUser, getMyApplications);
-// router.get("/received", protect, getReceivedApplications);
+router.get("/received", verifyToken, getReceivedApplications);
 // router.put("/:id/status", protect, updateApplicationStatus);
 
 export default router;
