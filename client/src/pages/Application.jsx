@@ -142,7 +142,7 @@ const Application = () => {
                         >
                           <td className="py-3 px-4 flex items-center gap-3">
                             <img
-                              src={application.jobId.companyLogo}
+                              src={application.jobId?.companyLogo}
                               alt=""
                               className="w-10 h-10 object-contain "
                             />
@@ -152,10 +152,10 @@ const Application = () => {
                           </td>
 
                           <td className="py-3 px-4 text-gray-700">
-                            {application.jobId.title}
+                            {application.jobId?.title}
                           </td>
                           <td className="py-3 px-4 text-gray-700">
-                            {application.jobId.location}
+                            {application.jobId?.location}
                           </td>
                           <td className="py-3 px-4 text-gray-700">
                             {new Date(
@@ -192,13 +192,13 @@ const Application = () => {
                     >
                       <div className="flex items-center gap-3 mb-3">
                         <img
-                          src={application.jobId.companyLogo}
+                          src={application.jobId?.companyLogo}
                           alt=""
                           className="w-12 h-12 object-contain"
                         />
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900">
-                            {application.jobId.title}
+                            {application.jobId?.title}
                           </h3>
                         </div>
                       </div>
@@ -206,7 +206,7 @@ const Application = () => {
                       <div className="text-sm text-gray-700 space-y-1">
                         <p>
                           <span className="font-medium">Location:</span>{" "}
-                          {application.jobId.location}
+                          {application.jobId?.location}
                         </p>
                         <p>
                           <span className="font-medium">Date:</span>

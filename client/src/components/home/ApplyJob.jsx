@@ -116,7 +116,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
             {/* Apply button */}
             <div className="flex flex-col place-items-end gap-1">
               {appliedjobs.some(
-                (appliedJob) => appliedJob.jobId._id === job._id,
+                (appliedJob) => appliedJob.jobId?._id === job._id,
               ) ? (
                 <button
                   disabled
@@ -184,7 +184,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
           </div>
           <div className="w-full flex justify-center mt-6">
             {appliedjobs.some(
-                (appliedJob) => appliedJob.jobId._id === job._id,
+                (appliedJob) => appliedJob.jobId?._id === job._id,
               ) ? (
                 <button
                   disabled

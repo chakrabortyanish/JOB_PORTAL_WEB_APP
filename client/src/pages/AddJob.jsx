@@ -5,6 +5,9 @@ import "quill/dist/quill.snow.css";
 import { JobCategories } from "../assets/assets/assets.js";
 import { JobLocations } from "../assets/assets/assets.js";
 
+import { ToastContainer } from "react-toastify";
+import { showError, showSuccess, showWarning } from "../utils/toast";
+
 const AddJob = () => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
@@ -20,8 +23,8 @@ const AddJob = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log(typeof salary);
-    console.log({ title, description, allSkills, location, level, salary });
+    /* console.log(typeof salary);
+    console.log({ title, description, allSkills, location, level, salary }); */
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`, {
       method: "POST",
       headers: {
@@ -40,6 +43,11 @@ const AddJob = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log("Job added successfully:", data);
+        if (data.success) {
+          showSuccess("Job added successfully");
+        }else {
+          showError(data.message || "Failed to add job");
+        }
       })
       .catch((error) => {
         console.error("Error adding job:", error);
@@ -215,6 +223,7 @@ const AddJob = () => {
           Add Job
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 };

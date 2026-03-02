@@ -53,7 +53,7 @@ const Card = ({ job }) => {
         </p>
         <div className="flex gap-2 mt-3 absolute bottom-[20px]">
           {
-            appliedjobs.some(appliedJob => appliedJob.jobId._id === job._id) ? (
+            appliedjobs.some(appliedJob => appliedJob.jobId?._id === job._id) ? (
               <button 
               disabled
               className=" bg-gray-400 text-white px-4 py-1 border-1 rounded cursor-not-allowed">
