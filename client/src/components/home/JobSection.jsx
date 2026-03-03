@@ -101,15 +101,6 @@ const JobSection = () => {
   }, [selectedCategories, selectedLocations, searchJob, originalJobs]);
   // console.log("role ", searchJob.role);
 
- /*  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-sm">Loading dashboard...</p>
-      </div>
-    );
-  } */
-
   return (
     <div className="w-full h-auto p-5">
       <div className="flex justify-between max-md:flex-col gap-5">
@@ -213,7 +204,7 @@ const JobSection = () => {
             ""
           )}
         </div>
-        {!loading ? (
+        {loading ? (
           <div className="flex flex-col items-center mt-[100px] gap-4 w-full">
             <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
             <p className="text-gray-500 text-sm">Loading Jobs...</p>
