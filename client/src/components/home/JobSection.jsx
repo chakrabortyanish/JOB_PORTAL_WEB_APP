@@ -19,11 +19,27 @@ const JobSection = () => {
   const [displayFilter, setDisplayFilter] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { searchJob, setSearchJob, isSearched, jobs, setJobs, originalJobs, fetchJobs } =
-    React.useContext(JobContext);
+  // loading state 
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-    fetchJobs();   // 🔥 fetch from DB
+  const {
+    searchJob,
+    setSearchJob,
+    isSearched,
+    jobs,
+    setJobs,
+    originalJobs,
+    fetchJobs,
+  } = React.useContext(JobContext);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      await fetchJobs();
+      setLoading(false);
+    };
+
+    loadData(); // 🔥 fetch from DB
   }, []);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -37,7 +53,7 @@ const JobSection = () => {
         (prev) =>
           e.target.checked
             ? [...prev, value] // add value
-            : prev.filter((item) => item !== value) // remove value
+            : prev.filter((item) => item !== value), // remove value
       );
     }
 
@@ -45,50 +61,54 @@ const JobSection = () => {
       setSelectedLocations((prev) =>
         e.target.checked
           ? [...prev, value]
-          : prev.filter((item) => item !== value)
+          : prev.filter((item) => item !== value),
       );
     }
   };
 
   useEffect(() => {
-  let filteredJobs = originalJobs;
+    let filteredJobs = originalJobs;
 
-  // filter by category
-  if (selectedCategories.length > 0) {
-    filteredJobs = filteredJobs.filter(job =>
-      selectedCategories.includes(job.title)
-    );
-  }
+    // filter by category
+    if (selectedCategories.length > 0) {
+      filteredJobs = filteredJobs.filter((job) =>
+        selectedCategories.includes(job.title),
+      );
+    }
 
-  // filter by location
-  if (selectedLocations.length > 0) {
-    filteredJobs = filteredJobs.filter(job =>
-      selectedLocations.includes(job.location)
-    );
-  }
+    // filter by location
+    if (selectedLocations.length > 0) {
+      filteredJobs = filteredJobs.filter((job) =>
+        selectedLocations.includes(job.location),
+      );
+    }
 
-  // filter by search
-  if (searchJob.role) {
-    filteredJobs = filteredJobs.filter(job =>
-      job.title.toLowerCase().includes(searchJob.role.toLowerCase())
-    );
-  }
+    // filter by search
+    if (searchJob.role) {
+      filteredJobs = filteredJobs.filter((job) =>
+        job.title.toLowerCase().includes(searchJob.role.toLowerCase()),
+      );
+    }
 
-  if (searchJob.location) {
-    filteredJobs = filteredJobs.filter(job =>
-      job.location.toLowerCase().includes(searchJob.location.toLowerCase())
-    );
-  }
+    if (searchJob.location) {
+      filteredJobs = filteredJobs.filter((job) =>
+        job.location.toLowerCase().includes(searchJob.location.toLowerCase()),
+      );
+    }
 
-  setJobs(filteredJobs);
-  setCurrentPage(1); // reset pagination
-}, [
-  selectedCategories,
-  selectedLocations,
-  searchJob,
-  originalJobs,
-]);
+    setJobs(filteredJobs);
+    setCurrentPage(1); // reset pagination
+  }, [selectedCategories, selectedLocations, searchJob, originalJobs]);
   // console.log("role ", searchJob.role);
+
+ /*  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Loading dashboard...</p>
+      </div>
+    );
+  } */
 
   return (
     <div className="w-full h-auto p-5">
@@ -104,9 +124,12 @@ const JobSection = () => {
           >
             <span className="relative">
               <FaFilter className="relative text-gray-500" />
-              {
-                (selectedCategories.length > 0 || selectedLocations.length > 0 || searchJob.role || searchJob.location) &&  <span className="searched-flag opacity-80">✓</span>
-              }
+              {(selectedCategories.length > 0 ||
+                selectedLocations.length > 0 ||
+                searchJob.role ||
+                searchJob.location) && (
+                <span className="searched-flag opacity-80">✓</span>
+              )}
             </span>
             Filter <BiSolidDownArrow size={12} />
           </button>
@@ -161,7 +184,9 @@ const JobSection = () => {
                       value={category}
                       id={category}
                     />
-                    <label htmlFor={category} className="cursor-pointer">{category}</label>
+                    <label htmlFor={category} className="cursor-pointer">
+                      {category}
+                    </label>
                   </li>
                 ))}
               </ul>
@@ -177,7 +202,9 @@ const JobSection = () => {
                       value={location}
                       id={location}
                     />
-                    <label htmlFor={location} className="cursor-pointer">{location}</label>
+                    <label htmlFor={location} className="cursor-pointer">
+                      {location}
+                    </label>
                   </li>
                 ))}
               </ul>
@@ -186,62 +213,69 @@ const JobSection = () => {
             ""
           )}
         </div>
-        <section className="w-full h-auto">
-          <h2
-            id="joblist"
-            className="text-3xl text-center font-semibold text-blue-700"
-          >
-            Latest jobs
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-[20px]">
-            {/* job cards */}
-            {jobs
-              .slice((currentPage - 1) * 6, currentPage * 6)
-              .map((job, index) => (
-                <div key={index}>
-                  <Card job={job} />
-                </div>
-              ))}
+        {!loading ? (
+          <div className="flex flex-col items-center mt-[100px] gap-4 w-full">
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-gray-500 text-sm">Loading Jobs...</p>
           </div>
-
-          {/* job pagination  */}
-          {jobs.length > 0 && (
-            <div className="mx-auto flex items-center gap-2 w-fit text-[1.1rem] my-5">
-              <a
-                href="#joblist"
-                onClick={() =>
-                  setCurrentPage((pre) => (pre > 1 ? pre - 1 : pre))
-                }
-              >
-                <MdKeyboardDoubleArrowLeft />
-              </a>
-              {Array.from({ length: Math.ceil(jobs.length / 6) }).map(
-                (_, index) => (
-                  <a href="#joblist">
-                    <button
-                      onClick={() => setCurrentPage(index + 1)}
-                      className={`${
-                        currentPage === index + 1 ? "bg-green-400" : ""
-                      } font-['Roboto'] px-2 py-0.1 rounded border border-green-400 hover:cursor-pointer`}
-                    >
-                      {index + 1}
-                    </button>
-                  </a>
-                )
-              )}
-              <a
-                href="#joblist"
-                onClick={() =>
-                  setCurrentPage((pre) =>
-                    pre < Math.ceil(jobs.length / 6) ? pre + 1 : pre
-                  )
-                }
-              >
-                <MdKeyboardDoubleArrowRight />
-              </a>
+        ) : (
+          <section className="w-full h-auto">
+            <h2
+              id="joblist"
+              className="text-3xl text-center font-semibold text-blue-700"
+            >
+              Latest jobs
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-[20px]">
+              {/* job cards */}
+              {jobs
+                .slice((currentPage - 1) * 6, currentPage * 6)
+                .map((job, index) => (
+                  <div key={index}>
+                    <Card job={job} />
+                  </div>
+                ))}
             </div>
-          )}
-        </section>
+
+            {/* job pagination  */}
+            {jobs.length > 0 && (
+              <div className="mx-auto flex items-center gap-2 w-fit text-[1.1rem] my-5">
+                <a
+                  href="#joblist"
+                  onClick={() =>
+                    setCurrentPage((pre) => (pre > 1 ? pre - 1 : pre))
+                  }
+                >
+                  <MdKeyboardDoubleArrowLeft />
+                </a>
+                {Array.from({ length: Math.ceil(jobs.length / 6) }).map(
+                  (_, index) => (
+                    <a href="#joblist">
+                      <button
+                        onClick={() => setCurrentPage(index + 1)}
+                        className={`${
+                          currentPage === index + 1 ? "bg-green-400" : ""
+                        } font-['Roboto'] px-2 py-0.1 rounded border border-green-400 hover:cursor-pointer`}
+                      >
+                        {index + 1}
+                      </button>
+                    </a>
+                  ),
+                )}
+                <a
+                  href="#joblist"
+                  onClick={() =>
+                    setCurrentPage((pre) =>
+                      pre < Math.ceil(jobs.length / 6) ? pre + 1 : pre,
+                    )
+                  }
+                >
+                  <MdKeyboardDoubleArrowRight />
+                </a>
+              </div>
+            )}
+          </section>
+        )}
       </div>
     </div>
   );

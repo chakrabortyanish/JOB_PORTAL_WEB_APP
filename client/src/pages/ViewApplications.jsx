@@ -98,7 +98,7 @@ export default function ViewApplications() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
         <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-sm">Loading dashboard...</p>
+        <p className="text-gray-500 text-sm">Loading Applications...</p>
       </div>
     );
   }
