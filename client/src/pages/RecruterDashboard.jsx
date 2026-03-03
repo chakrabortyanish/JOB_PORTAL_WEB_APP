@@ -1,51 +1,78 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Briefcase, Users, CheckCircle, XCircle, Loader2 } from "lucide-react";
 
-import {
-  BriefcaseIcon,
-  UsersIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/outline";
+export default function Dashboard() {
+  const [dashboard, setDashboard] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-const stats = [
-  {
-    title: "Total Jobs",
-    value: 12,
-    icon: BriefcaseIcon,
-    bg: "bg-blue-100",
-    color: "text-blue-600",
-  },
-  {
-    title: "Applications",
-    value: 248,
-    icon: UsersIcon,
-    bg: "bg-purple-100",
-    color: "text-purple-600",
-  },
-  {
-    title: "Shortlisted",
-    value: 36,
-    icon: CheckCircleIcon,
-    bg: "bg-green-100",
-    color: "text-green-600",
-  },
-  {
-    title: "Rejected",
-    value: 54,
-    icon: XCircleIcon,
-    bg: "bg-red-100",
-    color: "text-red-600",
-  },
-];
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/recruiter/dashboard`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        );
+        const data = await res.json();
+        setDashboard(data);
+      } catch (err) {
+        console.error("Error fetching dashboard:", err);
+      } finally {
+        setLoading();
+      }
+    };
 
-const RecruiterDashboard = () => {
+    fetchDashboard();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  const stats = [
+    {
+      title: "Total Jobs",
+      value: dashboard.totalJobs,
+      icon: Briefcase,
+      bg: "bg-blue-100",
+      color: "text-blue-600",
+    },
+    {
+      title: "Applications",
+      value: dashboard.totalApplications,
+      icon: Users,
+      bg: "bg-purple-100",
+      color: "text-purple-600",
+    },
+    {
+      title: "Shortlisted",
+      value: dashboard.shortlisted,
+      icon: CheckCircle,
+      bg: "bg-green-100",
+      color: "text-green-600",
+    },
+    {
+      title: "Rejected",
+      value: dashboard.rejected,
+      icon: XCircle,
+      bg: "bg-red-100",
+      color: "text-red-600",
+    },
+  ];
+
   return (
-    <div className="p-7 bg-gray-50 h-auto rounded">
+    <div className="p-5 sm:p-7 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-800">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800">
           Welcome back 👋
         </h1>
         <p className="text-gray-500 text-sm mt-1">
@@ -53,22 +80,22 @@ const RecruiterDashboard = () => {
         </p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      {/* Stats Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
         {stats.map((item, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-5 flex items-center gap-4"
+            className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition duration-300 p-5 flex items-center gap-4"
           >
             <div
-              className={`w-12 h-12 flex items-center justify-center rounded-lg ${item.bg}`}
+              className={`w-12 h-12 flex items-center justify-center rounded-xl ${item.bg}`}
             >
               <item.icon className={`w-6 h-6 ${item.color}`} />
             </div>
 
             <div>
               <p className="text-sm text-gray-500">{item.title}</p>
-              <h2 className="text-xl font-bold text-gray-800">{item.value}</h2>
+              <h2 className="text-2xl font-bold text-gray-800">{item.value}</h2>
             </div>
           </div>
         ))}
@@ -76,51 +103,63 @@ const RecruiterDashboard = () => {
 
       {/* Main Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+        {/* Recent Applications */}
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Recent Applications
           </h3>
 
-          <div className="space-y-4">
-            {["Frontend Developer", "Backend Engineer", "UI Designer"].map(
-              (job, index) => (
+          {dashboard.recentApplications.length === 0 ? (
+            <p className="text-gray-500 text-sm">No applications yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {dashboard.recentApplications.map((app) => (
                 <div
-                  key={index}
-                  className="flex justify-between items-center p-4 border rounded-lg hover:bg-gray-50 transition"
+                  key={app._id}
+                  className="flex justify-between items-center p-4 border rounded-xl hover:bg-gray-50 transition"
                 >
                   <div>
-                    <p className="font-medium text-gray-700">{job}</p>
-                    <p className="text-sm text-gray-500">5 new applications</p>
+                    <p className="font-medium text-gray-700">
+                      {app.jobId?.title}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Status: {app.status}
+                    </p>
                   </div>
-                  <button className="text-sm text-blue-600 hover:underline">
+
+                  <Link
+                    to={`/dashboard/applications/${app.jobId?._id}`}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
                     View
-                  </button>
+                  </Link>
                 </div>
-              )
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="bg-white rounded-2xl shadow-sm p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Quick Actions
           </h3>
 
           <div className="flex flex-col gap-3">
             <Link to="/dashboard/add-job">
-              <button className="w-full py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer">
+              <button className="w-full py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition">
                 ➕ Post New Job
               </button>
             </Link>
+
             <Link to="/dashboard/manage-jobs">
-              <button className="w-full py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
+              <button className="w-full py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
                 📄 Manage Jobs
               </button>
             </Link>
+
             <Link to="/dashboard/view-application">
-              <button className="w-full py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition cursor-pointer">
+              <button className="w-full py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
                 👥 View Applications
               </button>
             </Link>
@@ -129,6 +168,4 @@ const RecruiterDashboard = () => {
       </div>
     </div>
   );
-};
-
-export default RecruiterDashboard;
+}

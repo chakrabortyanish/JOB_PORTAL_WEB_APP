@@ -44,11 +44,13 @@ export default function ViewApplications() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Received applications data:", data.applications);
+        // console.log("Received applications data:", data.applications);
         setApplications(data?.applications || []); // assuming API returns { applications: [...] }
       })
       .catch((err) => {
         console.error("Error fetching received applications:", err);
+      }).finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -68,7 +70,7 @@ export default function ViewApplications() {
     );
   }, [applications, query]);
 
-  console.log("filtered applications: ", filtered);
+  // console.log("filtered applications: ", filtered);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
@@ -89,7 +91,17 @@ export default function ViewApplications() {
     a.remove();
   }
 
-  console.log("Filtered applications: ", applications);
+  // console.log("Filtered applications: ", applications);
+
+ const [loading, setLoading] = useState(true);
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Loading dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-0">

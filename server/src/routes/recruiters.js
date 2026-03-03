@@ -12,4 +12,8 @@ router.post('/login', handleRecruiterLogin);
 router.put('/editprofile', verifyToken, handleRecruiterEdit);
 router.delete('/deleteprofile', verifyToken, handleRecruiterDelete);
 
+//dashboard route
+import { getDashboardData } from '../controllers/dashboard.controller.js';
+router.get('/dashboard', verifyToken, getDashboardData);
+
 export default router;

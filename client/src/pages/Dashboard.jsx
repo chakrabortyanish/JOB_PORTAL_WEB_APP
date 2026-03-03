@@ -160,7 +160,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="w-[1250px] mx-auto flex">
+        <div className="max-w-7xl w-full mx-auto flex max-md:flex-col gap-10">
           {/* left */}
           <section className="flex flex-col gap-2 w-[230px] text-gray-700 font-[500] h-full">
             <NavLink
@@ -217,6 +217,8 @@ const Dashboard = () => {
               View Applications
             </NavLink>
           </section>
+
+          {/* right */}
           <section className="pl-7 pb-4">
             <Outlet />
           </section>
