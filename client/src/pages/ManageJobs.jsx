@@ -1,4 +1,4 @@
-import React, {useMemo, useState } from "react";
+import React, {useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ManageJobs.jsx
@@ -6,6 +6,10 @@ import { useNavigate } from "react-router-dom";
 // Drop into your React project and import <ManageJobs />. Replace sampleData with API calls as needed.
 
 export default function ManageJobs() {
+  useEffect(() => {
+    alert("This is a static demo page. Replace with real API data and actions.");
+  }, []);
+
   const sampleData = [
     {
       id: 101,
