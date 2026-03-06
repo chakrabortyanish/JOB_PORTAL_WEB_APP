@@ -13,6 +13,6 @@ const router = express.Router();
 router.post("/", protectUser, applyJob);
 router.get("/my", protectUser, getMyApplications);
 router.get("/received", verifyToken, getReceivedApplications);
-// router.put("/:id/status", protect, updateApplicationStatus);
+router.patch("/:id/status", updateApplicationStatus);
 
 export default router;

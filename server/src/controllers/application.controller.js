@@ -86,13 +86,22 @@ export const getReceivedApplications = async (req, res) => {
 
 /* Recruiter update status */
 export const updateApplicationStatus = async (req, res) => {
-  const { status } = req.body;
+  try {
+    const { id } = req.params;   // 👈 this is the application id
+    const { status } = req.body;
 
-  const app = await Application.findByIdAndUpdate(
-    req.params.id,
-    { status },
-    { new: true }
-  );
+    const application = await Application.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
 
-  res.json(app);
+    res.status(200).json({
+      success: true,
+      application,
+      message: "Status updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };

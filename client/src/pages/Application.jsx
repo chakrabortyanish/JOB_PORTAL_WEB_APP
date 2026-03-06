@@ -167,9 +167,9 @@ const Application = () => {
                             <span
                               className={`px-3 py-1 rounded-full text-sm font-medium 
                 ${
-                  application.status === "Accepted"
+                  application.status === "selected"
                     ? "bg-green-100 text-green-700"
-                    : application.status === "Rejected"
+                    : application.status === "rejected"
                       ? "bg-red-100 text-red-700"
                       : "bg-yellow-100 text-yellow-700"
                 }`}

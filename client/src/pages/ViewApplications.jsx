@@ -1,38 +1,11 @@
 import React, { useMemo, useState } from "react";
-import cv from "../assets/Anish Chakraborty_CV.pdf"
+import cv from "../assets/Anish Chakraborty_CV.pdf";
 import { useEffect } from "react";
+import { showError, showSuccess } from "../utils/toast";
 
 export default function ViewApplications() {
+  const [applications, setApplications] = useState([]);
 
-   const [applications, setApplications] = useState([]);
-  // sample data - replace with API data
- /*  const initialData = [
-    {
-      id: 1,
-      userName: "Anish Chakraborty",
-      jobTitle: "Frontend Developer",
-      location: "Kolkata, India",
-      resumeUrl: "https://example.com/resume-anish.pdf",
-      appliedAt: "2025-12-01",
-    },
-    {
-      id: 2,
-      userName: "Riya Sen",
-      jobTitle: "Backend Engineer",
-      location: "Bengaluru, India",
-      resumeUrl: "https://example.com/resume-riya.pdf",
-      appliedAt: "2025-11-28",
-    },
-    {
-      id: 3,
-      userName: "Rahul Das",
-      jobTitle: "Full Stack Developer",
-      location: "Mumbai, India",
-      resumeUrl: "https://example.com/resume-rahul.pdf",
-      appliedAt: "2025-11-25",
-    },
-  ];
- */
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications/received`, {
       method: "GET",
@@ -40,7 +13,7 @@ export default function ViewApplications() {
         "Content-Type": "application/json",
         //Authorization: `Bearer ${localStorage.getItem("R_Token")}`, // send token in header for authentication
       },
-      credentials: "include" // send cookies for authentication
+      credentials: "include", // send cookies for authentication
     })
       .then((res) => res.json())
       .then((data) => {
@@ -49,7 +22,8 @@ export default function ViewApplications() {
       })
       .catch((err) => {
         console.error("Error fetching received applications:", err);
-      }).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
@@ -66,7 +40,7 @@ export default function ViewApplications() {
       (a) =>
         a.candidate?.name.toLowerCase().includes(q) ||
         a.jobId?.title.toLowerCase().includes(q) ||
-        a.jobId?.location.toLowerCase().includes(q)
+        a.jobId?.location.toLowerCase().includes(q),
     );
   }, [applications, query]);
 
@@ -74,11 +48,6 @@ export default function ViewApplications() {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
-
-  function handleDelete(id) {
-    if (!confirm("Delete this application?")) return;
-    setApplications((prev) => prev.filter((p) => p.id !== id));
-  }
 
   function handleDownload(url, name) {
     // simple download helper - opens in new tab
@@ -93,7 +62,7 @@ export default function ViewApplications() {
 
   // console.log("Filtered applications: ", applications);
 
- const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
@@ -102,6 +71,42 @@ export default function ViewApplications() {
       </div>
     );
   }
+
+  // handle status change
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const handleStatusChange = async (id, status) => {
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/applications/${id}/status`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    const data = await res.json();
+
+    // console.log("Status update response:", data);
+
+    if (data.success) {
+      setApplications((prev) =>
+        prev.map((app) =>
+          app._id === id ? { ...app, status } : app
+        )
+      );
+
+      showSuccess(data.message || "Status updated successfully");
+    }
+  } catch (err) {
+    console.error("Status update failed:", err);
+    showError("Failed to update status.", err.message);
+  }
+};
 
   return (
     <div className="p-0">
@@ -112,11 +117,17 @@ export default function ViewApplications() {
             type="search"
             placeholder="Search by name, job or location"
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
             className="px-3 py-2 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-200"
           />
           <button
-            onClick={() => { setQuery(""); setPage(1); }}
+            onClick={() => {
+              setQuery("");
+              setPage(1);
+            }}
             className="text-sm text-gray-600 hover:underline"
           >
             Clear
@@ -128,18 +139,31 @@ export default function ViewApplications() {
         <table className="min-w-full table-auto">
           <thead className="bg-gray-50">
             <tr className="text-left">
-              <th className="px-6 py-3 text-sm font-medium text-gray-700">User name</th>
-              <th className="px-6 py-3 text-sm font-medium text-gray-700">Job title</th>
-              <th className="px-6 py-3 text-sm font-medium text-gray-700">Location</th>
-              <th className="px-6 py-3 text-sm font-medium text-gray-700">Resume</th>
-              <th className="px-6 py-3 text-sm font-medium text-gray-700">Action</th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                User name
+              </th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                Job title
+              </th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                Location
+              </th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                Resume
+              </th>
+              <th className="px-6 py-3 text-sm font-medium text-gray-700">
+                Action
+              </th>
             </tr>
           </thead>
 
           <tbody className="divide-y">
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-20 text-center text-gray-400">
+                <td
+                  colSpan={5}
+                  className="px-6 py-20 text-center text-gray-400"
+                >
                   No applications found
                 </td>
               </tr>
@@ -150,21 +174,34 @@ export default function ViewApplications() {
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold">
                         {/* {app.userName.split(" ").map(n => n[0]).slice(0,2).join("") || "NA"} */}
-                        <img src={app.candidate?.image} alt={app.candidate?.name || "Candidate"} className="h-10 w-10 rounded-full object-cover" />
+                        <img
+                          src={app.candidate?.image}
+                          alt={app.candidate?.name || "Candidate"}
+                          className="h-10 w-10 rounded-full object-cover"
+                        />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">{app.candidate?.name}</div>
-                        <div className="text-sm text-gray-500">Applied: {new Date(app.createdAt).toLocaleDateString()}</div>
+                        <div className="font-medium text-gray-900">
+                          {app.candidate?.name}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          Applied:{" "}
+                          {new Date(app.createdAt).toLocaleDateString()}
+                        </div>
                       </div>
                     </div>
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-gray-900 font-medium">{app.jobId.title}</div>
+                    <div className="text-gray-900 font-medium">
+                      {app.jobId?.title}
+                    </div>
                     {/* <div className="text-sm text-gray-500">ID: {app.id}</div> */}
                   </td>
 
-                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">{app.jobId.location}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-gray-700">
+                    {app.jobId?.location}
+                  </td>
 
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
@@ -176,7 +213,12 @@ export default function ViewApplications() {
                       </button>
 
                       <button
-                        onClick={() => handleDownload(app.resumeUrl, `${app.userName}-resume.pdf`)}
+                        onClick={() =>
+                          handleDownload(
+                            app.resumeUrl,
+                            `${app.userName}-resume.pdf`,
+                          )
+                        }
                         className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50"
                       >
                         Download
@@ -186,19 +228,24 @@ export default function ViewApplications() {
 
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => alert(`Message ${app.userName} - integrate chat/email here`)}
-                        className="px-3 py-1 rounded-md bg-indigo-600 text-white text-sm hover:bg-indigo-700"
+                      <select
+                        value={app.status || "pending"}
+                        onChange={(e) =>
+                          handleStatusChange(app._id, e.target.value)
+                        }
+                        className={`px-3 py-1.5 rounded-md text-sm font-medium border outline-none transition
+                      ${
+                        app.status === "applied"
+                          ? "bg-yellow-100 text-yellow-700 border-yellow-300"
+                          : app.status === "selected"
+                            ? "bg-green-100 text-green-700 border-green-300"
+                            : "bg-red-100 text-red-700 border-red-300"
+                      }`}
                       >
-                        Message
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(app.id)}
-                        className="px-3 py-1 rounded-md bg-red-50 text-red-600 text-sm border border-red-100 hover:bg-red-100"
-                      >
-                        Delete
-                      </button>
+                        <option value="pending">🟡 Pending</option>
+                        <option value="selected">🟢 Selected</option>
+                        <option value="rejected">🔴 Rejected</option>
+                      </select>
                     </div>
                   </td>
                 </tr>
@@ -209,23 +256,28 @@ export default function ViewApplications() {
 
         {/* Pagination */}
         <div className="px-6 py-3 bg-gray-50 flex items-center justify-between">
-          <div className="text-sm text-gray-600">Showing {Math.min((page-1)*pageSize + 1, filtered.length)} - {Math.min(page*pageSize, filtered.length)} of {filtered.length}</div>
+          <div className="text-sm text-gray-600">
+            Showing {Math.min((page - 1) * pageSize + 1, filtered.length)} -{" "}
+            {Math.min(page * pageSize, filtered.length)} of {filtered.length}
+          </div>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setPage((p) => Math.max(1, p-1))}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className={`px-3 py-1 rounded-md border ${page===1? 'text-gray-400 border-gray-100':'text-gray-700 border-gray-200'} `}
+              className={`px-3 py-1 rounded-md border ${page === 1 ? "text-gray-400 border-gray-100" : "text-gray-700 border-gray-200"} `}
             >
               Prev
             </button>
 
-            <div className="text-sm text-gray-700">Page {page} / {totalPages}</div>
+            <div className="text-sm text-gray-700">
+              Page {page} / {totalPages}
+            </div>
 
             <button
-              onClick={() => setPage((p) => Math.min(totalPages, p+1))}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className={`px-3 py-1 rounded-md border ${page===totalPages? 'text-gray-400 border-gray-100':'text-gray-700 border-gray-200'} `}
+              className={`px-3 py-1 rounded-md border ${page === totalPages ? "text-gray-400 border-gray-100" : "text-gray-700 border-gray-200"} `}
             >
               Next
             </button>
@@ -238,7 +290,9 @@ export default function ViewApplications() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-3xl mx-4 rounded-lg shadow-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b">
-              <h3 className="text-lg font-medium">Resume — {selected.userName}</h3>
+              <h3 className="text-lg font-medium">
+                Resume — {selected.userName}
+              </h3>
               <div className="flex items-center gap-2">
                 <a
                   href={selected.resumeUrl}
@@ -248,13 +302,22 @@ export default function ViewApplications() {
                 >
                   Open in new tab
                 </a>
-                <button onClick={() => setSelected(null)} className="px-3 py-1 rounded-md bg-gray-100">Close</button>
+                <button
+                  onClick={() => setSelected(null)}
+                  className="px-3 py-1 rounded-md bg-gray-100"
+                >
+                  Close
+                </button>
               </div>
             </div>
 
             <div className="p-4 h-[70vh] overflow-auto">
               {/* show resume preview - if it's a pdf the browser will render it, otherwise link will open */}
-              <iframe src={cv} title="resume-preview" className="w-full h-full border"></iframe>
+              <iframe
+                src={cv}
+                title="resume-preview"
+                className="w-full h-full border"
+              ></iframe>
             </div>
           </div>
         </div>
@@ -262,4 +325,3 @@ export default function ViewApplications() {
     </div>
   );
 }
-

@@ -53,8 +53,8 @@ export default function Dashboard() {
       color: "text-purple-600",
     },
     {
-      title: "Shortlisted",
-      value: dashboard.shortlisted,
+      title: "Selected",
+      value: dashboard.selected,
       icon: CheckCircle,
       bg: "bg-green-100",
       color: "text-green-600",

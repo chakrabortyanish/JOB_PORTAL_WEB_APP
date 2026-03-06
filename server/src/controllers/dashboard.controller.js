@@ -11,12 +11,12 @@ export const getDashboardData = async (req, res) => {
     // Total Applications
     const totalApplications = await Application.countDocuments({ recruiterId });
 
-    console.log("Total Applications:", totalApplications, totalJobs);
+    // console.log("Total Applications:", totalApplications, totalJobs);
 
     // Shortlisted
-    const shortlisted = await Application.countDocuments({
+    const selected = await Application.countDocuments({
       recruiterId,
-      status: "shortlisted"
+      status: "selected"
     });
 
     // Rejected
@@ -34,7 +34,7 @@ export const getDashboardData = async (req, res) => {
     res.status(200).json({
       totalJobs,
       totalApplications,
-      shortlisted,
+      selected,
       rejected,
       recentApplications
     });
