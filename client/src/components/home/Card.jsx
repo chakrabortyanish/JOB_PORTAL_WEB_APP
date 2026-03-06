@@ -1,37 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import ApplyJob from "./ApplyJob";
 
-import { useAuth } from "@clerk/clerk-react";
+// import { useAuth } from "@clerk/clerk-react";
 
-const Card = ({ job }) => {
+const Card = ({ job, appliedjobs }) => {
   const [selectedJob, setSelectedJob] = useState();
-  const [appliedjobs, setAppliedjobs] = useState([]);
-
-   const { getToken } = useAuth();
-
-  async function appliedJobs() {
-      const token = await getToken();
-      if (!token) return;
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications/my`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }, 
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log("Jobs applied data:", data);
-          setAppliedjobs(data);
-        })
-        .catch((err) => {
-          console.error("Error fetching applied jobs:", err);
-        });
-    }
-  
-    useEffect(() => {
-      appliedJobs();
-    }, []);
 
   return (
     <>
