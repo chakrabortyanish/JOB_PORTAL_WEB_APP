@@ -142,7 +142,7 @@ const Footer = () => {
                   →
                 </span>
                 <span className="transition-all duration-300 group-hover:translate-x-2">
-                 Privacy
+                  Privacy
                 </span>
               </a>
             </li>
@@ -171,17 +171,28 @@ const Footer = () => {
 
           <ul className="flex items-center gap-6 text-2xl">
             <li>
-              <a href="#" className="hover:text-blue-500 transition">
+              <a
+                href="#"
+                className="transition duration-300 transform hover:-translate-y-2 hover:scale-125 hover:text-blue-500 inline-block"
+              >
                 <FaSquareFacebook />
               </a>
             </li>
+
             <li>
-              <a href="#" className="hover:text-pink-500 transition">
+              <a
+                href="#"
+                className="transition duration-300 transform hover:-translate-y-2 hover:scale-125 hover:text-pink-500 inline-block"
+              >
                 <FaInstagram />
               </a>
             </li>
+
             <li>
-              <a href="#" className="hover:text-blue-400 transition">
+              <a
+                href="#"
+                className="transition duration-300 transform hover:-translate-y-2 hover:scale-125 hover:text-blue-400 inline-block"
+              >
                 <FaLinkedin />
               </a>
             </li>
