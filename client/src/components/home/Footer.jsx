@@ -23,142 +23,89 @@ const Footer = () => {
         {/* Links Section */}
         <div className="flex w-full justify-between max-sm:flex-col max-sm:text-center max-sm:gap-[30px]">
           <ul className="flex flex-col gap-3">
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  About us
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  We're hiring
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Hire interns
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Post a Job
-                </span>
-              </a>
-            </li>
+            {["About us", "We're hiring", "Hire interns", "Post a Job"].map(
+              (text, i) => (
+                <li key={i}>
+                  <a
+                    href="#"
+                    className="group inline-flex items-center transition-all duration-300"
+                  >
+                    <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="20"
+                        width="20"
+                        viewBox="0 -960 960 960"
+                        fill="currentColor"
+                        className="text-current group-hover:scale-110 transition-transform duration-300"
+                      >
+                        <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                      </svg>
+                    </span>
+
+                    <span className="transition-all duration-300 group-hover:translate-x-2">
+                      {text}
+                    </span>
+                  </a>
+                </li>
+              ),
+            )}
           </ul>
 
           <ul className="flex flex-col gap-3">
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Team Diary
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Blog
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Our Services
-                </span>
-              </a>
-            </li>
+            {["Team Diary", "Blog", "Our Services"].map((text, i) => (
+              <li key={i}>
+                <a
+                  href="#"
+                  className="group inline-flex items-center transition-all duration-300"
+                >
+                  <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20"
+                      width="20"
+                      viewBox="0 -960 960 960"
+                      fill="currentColor"
+                      className="text-current group-hover:scale-110 transition-transform duration-300"
+                    >
+                      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                    </svg>
+                  </span>
+
+                  <span className="transition-all duration-300 group-hover:translate-x-2">
+                    {text}
+                  </span>
+                </a>
+              </li>
+            ))}
           </ul>
 
           <ul className="flex flex-col gap-3">
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Terms & Conditions
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Privacy
-                </span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="group inline-flex items-center transition-all duration-300"
-              >
-                <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
-                  →
-                </span>
-                <span className="transition-all duration-300 group-hover:translate-x-2">
-                  Contact us
-                </span>
-              </a>
-            </li>
+            {["Terms & Conditions", "Privacy", "Contact us"].map((text, i) => (
+              <li key={i}>
+                <a
+                  href="#"
+                  className="group inline-flex items-center transition-all duration-300"
+                >
+                  <span className="ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20"
+                      width="20"
+                      viewBox="0 -960 960 960"
+                      fill="currentColor"
+                      className="text-current group-hover:scale-110 transition-transform duration-300"
+                    >
+                      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                    </svg>
+                  </span>
+
+                  <span className="transition-all duration-300 group-hover:translate-x-2">
+                    {text}
+                  </span>
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
