@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ManageJobs.jsx
@@ -6,72 +6,29 @@ import { useNavigate } from "react-router-dom";
 // Drop into your React project and import <ManageJobs />. Replace sampleData with API calls as needed.
 
 export default function ManageJobs() {
-  useEffect(() => {
-    alert("This is a static demo page. Replace with real API data and actions.");
-  }, []);
+  const [loading, setLoading] = useState(true);
 
-  const sampleData = [
-    {
-      id: 101,
-      title: "Frontend Developer",
-      date: "2025-11-30",
-      location: "Kolkata, India",
-      applicants: 12,
-      visible: true,
-    },
-    {
-      id: 102,
-      title: "Backend Engineer",
-      date: "2025-11-25",
-      location: "Bengaluru, India",
-      applicants: 8,
-      visible: false,
-    },
-    {
-      id: 103,
-      title: "Full Stack Developer",
-      date: "2025-11-20",
-      location: "Remote",
-      applicants: 23,
-      visible: true,
-    } /* 
-    {
-      id: 102,
-      title: "Backend Engineer",
-      date: "2025-11-25",
-      location: "Bengaluru, India",
-      applicants: 8,
-      visible: false,
-    },
-    {
-      id: 103,
-      title: "Full Stack Developer",
-      date: "2025-11-20",
-      location: "Remote",
-      applicants: 23,
-      visible: true,
-    },
-    {
-      id: 102,
-      title: "Backend Engineer",
-      date: "2025-11-25",
-      location: "Bengaluru, India",
-      applicants: 8,
-      visible: false,
-    },
-    {
-      id: 103,
-      title: "Full Stack Developer",
-      date: "2025-11-20",
-      location: "Remote",
-      applicants: 23,
-      visible: true,
-    }, */,
-  ];
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs/my`, {
+      credentials: "include", // include cookies for auth
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setLoading(false);
+          setJobs(data.jobs);
+        }
+        // console.log("My jobs from API: ", data);
+        // setJobs(data); // Uncomment when API is ready
+      })
+      .catch((err) => {
+        console.error("Error fetching jobs: ", err);
+      });
+  }, []);
 
   const navigate = useNavigate();
 
-  const [jobs, setJobs] = useState(sampleData);
+  const [jobs, setJobs] = useState([]);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 6;
@@ -84,18 +41,12 @@ export default function ManageJobs() {
       (j) =>
         j.title.toLowerCase().includes(q) ||
         j.location.toLowerCase().includes(q) ||
-        String(j.id).includes(q)
+        String(j.id).includes(q),
     );
   }, [jobs, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
-
-  function toggleVisible(id) {
-    setJobs((prev) =>
-      prev.map((j) => (j.id === id ? { ...j, visible: !j.visible } : j))
-    );
-  }
 
   function handleDelete(id) {
     if (!confirm("Delete this job?")) return;
@@ -110,6 +61,16 @@ export default function ManageJobs() {
   function handleViewApplicants(job) {
     // open modal to view applicants - using selectedJob state
     setSelectedJob(job);
+  }
+
+// job loading state
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
+        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-gray-500 text-sm">Job loading...</p>
+      </div>
+    );
   }
 
   return (
@@ -154,7 +115,7 @@ export default function ManageJobs() {
                 Applicants
               </th>
               <th className="px-6 py-3 text-sm font-medium text-gray-700">
-                Visible
+                Action
               </th>
             </tr>
           </thead>
@@ -174,26 +135,19 @@ export default function ManageJobs() {
                 <tr key={job.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-semibold">
-                        {String(job.title)
-                          .split(" ")
-                          .map((s) => s[0])
-                          .slice(0, 2)
-                          .join("")}
+                      <div className="h-10 w-10 rounded-full flex items-center justify-center font-semibold">
+                        <img src={job.companyLogo} alt="company-logo" />
                       </div>
                       <div>
                         <div className="font-medium text-gray-900">
                           {job.title}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          ID: {job.id}
                         </div>
                       </div>
                     </div>
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">
-                    {job.date}
+                    {new Date(job.createdAt).toLocaleDateString()}
                   </td>
 
                   <td className="px-6 py-4 whitespace-nowrap text-gray-700">
@@ -216,28 +170,6 @@ export default function ManageJobs() {
 
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center">
-                        <label className="inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={job.visible}
-                            onChange={() => toggleVisible(job.id)}
-                            className="sr-only"
-                          />
-                          <span
-                            className={`w-10 h-6 inline-block rounded-full transition-colors ${
-                              job.visible ? "bg-indigo-600" : "bg-gray-200"
-                            }`}
-                          ></span>
-                        </label>
-                        <span
-                          className={`ml-1.5 text-sm ${
-                            job.visible ? "text-gray-900" : "text-gray-500"
-                          }`}
-                        >
-                          {job.visible ? "Visible" : "Hidden"}
-                        </span>
-                      </div>
                       <button
                         onClick={() => handleEdit(job)}
                         className="px-2 py-1 text-sm border rounded-md"

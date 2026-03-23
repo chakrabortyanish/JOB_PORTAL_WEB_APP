@@ -20,8 +20,8 @@ export const createJob = async (req, res) => {
 
 /* Recruiter jobs */
 export const getMyJobs = async (req, res) => {
-  const jobs = await Job.find({ recruiterId: req.user.id });
-  res.json(jobs);
+  const jobs = await Job.find({ recruiterId: req.userId });
+  res.json({jobs , success: true });
 };
 
 /* Public job list */
