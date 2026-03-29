@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Loader_2 from "../utils/loading_2.jsx";
 // ManageJobs.jsx
 // Tailwind-ready React component to manage jobs listing in an admin/dashboard.
 // Drop into your React project and import <ManageJobs />. Replace sampleData with API calls as needed.
@@ -66,8 +67,8 @@ export default function ManageJobs() {
 // job loading state
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex flex-col items-center justify-center gap-1 min-w-[500px] w-full">
+        <Loader_2 />  
         <p className="text-gray-500 text-sm">Job loading...</p>
       </div>
     );

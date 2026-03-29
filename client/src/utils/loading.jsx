@@ -38,6 +38,7 @@ const StyledWrapper = styled.div`
     transform: scale(1, 0.2);
     -webkit-animation: barUp1 4s infinite;
     animation: barUp1 4s infinite;
+    background: #D6A2E8;
   }
 
   .loader__bar:nth-child(2) {
@@ -45,6 +46,7 @@ const StyledWrapper = styled.div`
     transform: scale(1, 0.4);
     -webkit-animation: barUp2 4s infinite;
     animation: barUp2 4s infinite;
+    background: #B33771;
   }
 
   .loader__bar:nth-child(3) {
@@ -52,6 +54,7 @@ const StyledWrapper = styled.div`
     transform: scale(1, 0.6);
     -webkit-animation: barUp3 4s infinite;
     animation: barUp3 4s infinite;
+    background: #badc58;
   }
 
   .loader__bar:nth-child(4) {
@@ -59,6 +62,7 @@ const StyledWrapper = styled.div`
     transform: scale(1, 0.8);
     -webkit-animation: barUp4 4s infinite;
     animation: barUp4 4s infinite;
+    background: #ff7979;
   }
 
   .loader__bar:nth-child(5) {
@@ -66,6 +70,7 @@ const StyledWrapper = styled.div`
     transform: scale(1, 1);
     -webkit-animation: barUp5 4s infinite;
     animation: barUp5 4s infinite;
+    background: #30336b;
   }
 
   .loader__ball {
@@ -74,7 +79,7 @@ const StyledWrapper = styled.div`
     left: 0;
     width: 10px;
     height: 10px;
-    background: rgb(44, 143, 255);
+    background: linear-gradient(135deg, #596275, #2C3A47);
     border-radius: 50%;
     -webkit-animation: ball624 4s infinite;
     animation: ball624 4s infinite;

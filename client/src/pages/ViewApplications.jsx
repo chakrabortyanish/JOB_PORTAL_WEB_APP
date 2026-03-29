@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from "react";
 import cv from "../assets/Anish Chakraborty_CV.pdf";
 import { useEffect } from "react";
+
 import { showError, showSuccess } from "../utils/toast";
+import Loader_2 from "../utils/loading_2.jsx";
 
 export default function ViewApplications() {
   const [applications, setApplications] = useState([]);
@@ -65,9 +67,9 @@ export default function ViewApplications() {
   const [loading, setLoading] = useState(true);
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-sm">Loading Applications...</p>
+      <div className="flex flex-col items-center justify-center gap-1 min-w-[500px] w-full">
+        <Loader_2 />  
+        <p className="text-gray-500 text-sm">loading Applications...</p>
       </div>
     );
   }

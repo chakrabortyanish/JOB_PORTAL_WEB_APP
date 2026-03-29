@@ -17,6 +17,8 @@ import { JobLocations } from "../../assets/assets/assets.js";
 
 import { useAuth } from "@clerk/clerk-react";
 
+import Loader from "../../utils/loading.jsx";
+
 const JobSection = () => {
   // start fetch applied jobs
   const [appliedjobs, setAppliedjobs] = useState([]);
@@ -239,7 +241,7 @@ const JobSection = () => {
         </div>
         {loading ? (
           <div className="flex flex-col items-center mt-[100px] gap-4 w-full">
-            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <Loader />
             <p className="text-gray-500 text-sm">Loading Jobs...</p>
           </div>
         ) : (
