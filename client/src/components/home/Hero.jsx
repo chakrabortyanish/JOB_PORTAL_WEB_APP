@@ -61,85 +61,67 @@ const Hero = () => {
           >
             Find a Job With Your Interests and Abilities
           </h1>
-          <p className="font-style italic  text-green-700 text-[1rem] mt-5 max-md:text-[0.8rem] hero-description">
-            Landing your dream job has never been easier. Explore thousands of
-            opportunities and apply in just a few clicks!
-          </p>
+          <p className="italic text-gray-700 text-[1.05rem] mt-5  max-md:text-[0.9rem] leading-relaxed">
+  Unlock your career potential with opportunities tailored to your skills. 
+  Explore, apply, and achieve your goals—all in just a few clicks.
+</p>
         </div>
         <div className="w-[500px] relative bg-cyan-100 max-lg:w-[350px] max-md:hidden">
-          <div className="absolute left-0 bottom-0 max-lg:w-[300px] max-lg:h-[350px] w-[400px] h-[400px] rounded-[48%_52%_62%_38%/62%_45%_55%_38%] bg-blue-600 ml-10 max-lg:ml-5">
+          <div
+            className="absolute left-0 bottom-0 ml-10 max-lg:ml-5 
+                      w-[400px] h-[400px] max-lg:w-[300px] max-lg:h-[350px]
+                      rounded-[48%_52%_62%_38%/62%_45%_55%_38%]
+                      bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600
+                      shadow-[0_20px_60px_rgba(79,70,229,0.5)]
+                      flex items-center justify-center"
+          >
             <img src={image} alt="" className="w-full h-full" />
           </div>
         </div>
+
+        {/* search form */}
         <div
-          className="pseudo-ele absolute z-50 left-1/2 -translate-x-1/2 bottom-10 border-2 border-red-500 opacity-100  w-[60%] h-[60px] rounded-xl
-          max-md:w-full max-md:max-w-[450px] max-md:bottom-20 overflow-hidden
-        "
+          className="absolute z-50 left-1/2 -translate-x-1/2 bottom-10
+                    w-[52%] max-md:w-full max-md:max-w-[450px]
+                    h-[65px] rounded-2xl
+                    bg-white/20 backdrop-blur-lg
+                    border border-white/30
+                    shadow-lg overflow-hidden"
         >
-          {/* bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 */}
           <form
             onSubmit={handleSearch}
-            className="font-style relative flex justify-between place-items-center gap-2 px-4 h-[100%] w-full  z-100"
+            className="flex items-center gap-3 px-4 h-full w-full"
           >
             <select
-              // value={search}
-              // onChange={(e) => setSearch(e.target.value)}
               ref={jobTitle}
-              className="w-full h-full max-w-[180px]  px-3 py-2 outline-0  cursor-pointer"
+              className="w-full max-w-[180px] bg-transparent px-3 py-2 outline-none text-gray-700 cursor-pointer"
             >
-              <option
-                value=""
-                style={{ fontWeight: "600", color: "#555", padding: "8px" }}
-              >
-                Select job topic...
-              </option>
+              <option value="">Select job topic...</option>
               {JobCategories.map((category, index) => (
-                <option
-                  key={index}
-                  value={category}
-                  style={{
-                    padding: "8px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    color: "#333",
-                  }}
-                >
+                <option key={index} value={category}>
                   {category}
                 </option>
               ))}
             </select>
+
             <select
-              // value={location}
-              // onChange={(e) => setLocation(e.target.value)}
               ref={jobLocation}
-              className="w-full h-full max-w-[180px]  px-3 py-2 outline-0 cursor-pointer"
+              className="w-full max-w-[180px] bg-transparent px-3 py-2 outline-none text-gray-700 cursor-pointer"
             >
-              <option
-                value=""
-                style={{ fontWeight: "600", color: "#555", padding: "8px" }}
-              >
-                Select location...
-              </option>
+              <option value="">Select location...</option>
               {JobLocations.map((location, index) => (
-                <option
-                  key={index}
-                  value={location}
-                  style={{
-                    padding: "8px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    color: "#333",
-                  }}
-                >
+                <option key={index} value={location}>
                   {location}
                 </option>
               ))}
-              {/* Add more options as needed */}
             </select>
+
             <button
               type="submit"
-              className="bg-orange-300 hover:bg-orange-500 px-6 py-2 rounded-xl text-black font-semibold cursor-pointer
-    transition-all duration-300 hover:scale-[1.03] active:scale-95"
+              className="bg-gradient-to-r from-orange-400 to-pink-500
+      hover:from-orange-500 hover:to-pink-600
+      text-white px-6 py-2 rounded-xl font-semibold
+      transition-all duration-300 hover:scale-105 active:scale-95 shadow-md ml-auto cursor-pointer"
             >
               Search
             </button>
