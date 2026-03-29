@@ -13,7 +13,7 @@ const AddJob = () => {
   const [description, setDescription] = React.useState("");
   const [skills, setSkills] = React.useState("");
   const [location, setLocation] = React.useState("");
-  const [level, setLevel] = React.useState("Full-time");
+  const [level, setLevel] = React.useState("");
   const [salary, setSalary] = React.useState("");
 
   const allSkills = skills
@@ -45,7 +45,7 @@ const AddJob = () => {
         console.log("Job added successfully:", data);
         if (data.success) {
           showSuccess("Job added successfully");
-        }else {
+        } else {
           showError(data.message || "Failed to add job");
         }
       })
@@ -96,17 +96,17 @@ const AddJob = () => {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={submitForm} className="flex flex-col gap-6 max-w-[500px]">
-        {/* Job Title: */}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br p-6">
+      <form
+        onSubmit={submitForm}
+        className="flex flex-col gap-5 w-full max-w-[550px] bg-white p-6 rounded-2xl shadow-lg"
+      >
+        {/* Job Title */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="location" className="font-[500] text-[1rem]">
-            Job Title:
-          </label>
+          <label className="font-semibold">Job Title:</label>
           <select
-            name=""
-            id=""
-            className="border-1 border-gray-600 px-2 py-1.5"
+            className="border border-gray-300 rounded-lg px-3 py-2 outline-none 
+        focus:ring-2 focus:ring-indigo-400 hover:border-indigo-400 transition"
             onChange={(e) => setTitle(e.target.value)}
             value={title}
             required
@@ -121,49 +121,41 @@ const AddJob = () => {
             ))}
           </select>
         </div>
-        {/* Job Description: */}
+
+        {/* Job Description */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="description" className="font-[500] text-[1rem]">
-            Job Description:
-          </label>
-          {/* <div ref={editorRef} className="h-[900px]"></div> */}
+          <label className="font-semibold">Job Description:</label>
           <textarea
             placeholder="Write job Description here"
-            name=""
-            id=""
-            className="w-[500px] h-[200px] border-1 border-gray-600 px-2 py-1.5"
+            className="h-[140px] border border-gray-300 rounded-lg px-3 py-2 outline-none 
+        focus:ring-2 focus:ring-indigo-400 hover:border-indigo-400 transition"
             onChange={(e) => setDescription(e.target.value)}
             value={description}
             required
-          ></textarea>
+          />
         </div>
 
-        {/* skills section */}
+        {/* Skills */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="location" className="font-[500] text-[1rem]">
-            Skills:
-          </label>
+          <label className="font-semibold">Skills:</label>
           <textarea
-            className="w-[500px] h-[100px] border-1 border-gray-600 px-2 py-1.5"
-            type="text"
-            name="skills"
-            placeholder="Enter skills using comma ( React, Node.js, Communication Skill )"
+            className="h-[100px] border border-gray-300 rounded-lg px-3 py-2 outline-none 
+        focus:ring-2 focus:ring-indigo-400 hover:border-indigo-400 transition"
+            placeholder="Enter skills (React, Node.js, Communication)"
             onChange={(e) => setSkills(e.target.value)}
             value={skills}
             required
-          ></textarea>
+          />
         </div>
 
-        {/* other details about job post */}
-        <div className="flex flex-wrap gap-5">
+        {/* Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Location */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="location" className="font-[500] text-[1rem]">
-              Location:
-            </label>
+            <label className="font-semibold">Location:</label>
             <select
-              name=""
-              id=""
-              className="border-1 border-gray-600 px-2 py-1.5"
+              className="border border-gray-300 rounded-lg px-3 py-2 outline-none 
+          focus:ring-2 focus:ring-indigo-400 hover:border-indigo-400 transition"
               onChange={(e) => setLocation(e.target.value)}
               value={location}
               required
@@ -178,52 +170,52 @@ const AddJob = () => {
               ))}
             </select>
           </div>
+
+          {/* Level */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="salary" className="font-[500] text-[1rem]">
-              Level:
-            </label>
+            <label className="font-semibold">Level:</label>
             <select
-              name=""
-              id=""
-              className="border-1 border-gray-600 px-2 py-1.5"
+              className="border border-gray-300 rounded-lg px-3 py-2 outline-none 
+          focus:ring-2 focus:ring-indigo-400 hover:border-indigo-400 transition"
               onChange={(e) => setLevel(e.target.value)}
               value={level}
               required
             >
-              <option value="" disabled>Select level</option>
-              {
-                ["fresher", "senior"].map((level, index) => (
-                  <option key={index} value={level}>
-                    {level}
-                  </option>
-                ))
-              }
+              <option value="" disabled>
+                Select level
+              </option>
+              {["fresher", "senior"].map((lvl, index) => (
+                <option key={index} value={lvl}>
+                  {lvl}
+                </option>
+              ))}
             </select>
           </div>
-          {/* salary con */}
+
+          {/* Salary */}
           <div className="flex flex-col gap-2">
-            <label htmlFor="Salary" className="font-[500] text-[1rem]">
-              Salary:
-            </label>
+            <label className="font-semibold">Salary:</label>
             <input
               type="text"
               placeholder="Add salary"
-              className="border-1 border-gray-600 pl-3 py-1.5"
+              className="border border-gray-300 rounded-lg px-3 py-2 outline-none 
+          focus:ring-2 focus:ring-indigo-400 hover:border-indigo-400 transition"
               onChange={(e) => setSalary(e.target.value)}
               value={salary}
               required
             />
           </div>
         </div>
-        {/* add job button */}
+
+        {/* Button */}
         <button
           type="submit"
-          className="w-[100px] font-[500] py-2 bg-green-400 cursor-pointer hover:bg-green-300"
+          className="mt-4 bg-indigo-500 text-white py-2 rounded-lg font-semibold 
+      hover:bg-indigo-600 active:scale-95 transition duration-200 shadow-md cursor-pointer"
         >
           Add Job
         </button>
       </form>
-      <ToastContainer />
     </div>
   );
 };

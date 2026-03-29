@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Briefcase, Users, CheckCircle, XCircle, Loader2 } from "lucide-react";
 
+import Loader from "../utils/loading";
+
 export default function Dashboard() {
   const [dashboard, setDashboard] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -30,10 +32,10 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] gap-4 min-w-full">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-500 text-sm">Loading dashboard...</p>
-      </div>
+    <div className="min-w-[500px] flex flex-col items-center justify-center gap-2 mx-auto">
+      <Loader />
+      <p className="text-gray-500">Loading Dashboard</p>
+    </div>
     );
   }
 

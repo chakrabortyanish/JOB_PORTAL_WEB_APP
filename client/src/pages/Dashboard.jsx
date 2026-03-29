@@ -219,7 +219,7 @@ const Dashboard = () => {
           </section>
 
           {/* right */}
-          <section className="pl-7 pb-4">
+          <section className="pl-7 pb-4 w-auto">
             <Outlet />
           </section>
         </div>
