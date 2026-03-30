@@ -42,9 +42,15 @@ const AddJob = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Job added successfully:", data);
+        // console.log("Job added successfully:", data);
         if (data.success) {
           showSuccess("Job added successfully");
+          setTitle("");
+          setDescription("");
+          setSkills("");
+          setLocation("");
+          setLevel("");
+          setSalary("");
         } else {
           showError(data.message || "Failed to add job");
         }
