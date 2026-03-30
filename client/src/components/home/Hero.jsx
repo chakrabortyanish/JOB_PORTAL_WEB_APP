@@ -22,7 +22,7 @@ const Hero = () => {
     const locationValue = jobLocation.current.value;
 
     if ((titleValue && locationValue) === "") {
-      setJobs;
+      return;
     }
 
     setSearchJob({
