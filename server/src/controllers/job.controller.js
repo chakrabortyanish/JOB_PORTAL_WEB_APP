@@ -26,6 +26,6 @@ export const getMyJobs = async (req, res) => {
 
 /* Public job list */
 export const getAllJobs = async (req, res) => {
-  const jobs = await Job.find({});
+  const jobs = await Job.find({}).sort({ createdAt: -1 });
   res.json(jobs);
 };
