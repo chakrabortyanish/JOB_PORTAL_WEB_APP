@@ -149,7 +149,7 @@ const Footer = () => {
         {/* Copyright */}
         <p className="text-center mt-8 text-gray-300 text-sm">
           © <span className="font-semibold">{new Date().getFullYear()}</span>{" "}
-          Careeronix. All rights reserved.
+          Careeronix. All rights reserved. Designed by <span className="font-semibold">Anish Chakraborty</span>.
         </p>
       </div>
     </div>
