@@ -21,8 +21,9 @@ const Hero = () => {
     const titleValue = jobTitle.current.value;
     const locationValue = jobLocation.current.value;
 
-    if ((titleValue && locationValue) === "") {
+    if (titleValue == "" && locationValue == "") {
       return;
+      // console.log("No search criteria provided. Please select at least one.");
     }
 
     setSearchJob({
