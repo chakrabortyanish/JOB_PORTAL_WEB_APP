@@ -7,12 +7,22 @@ import { CiEdit } from "react-icons/ci";
 // import { jobsApplied } from "../assets/assets/assets";
 
 import { useAuth } from "@clerk/clerk-react";
+import { showError, showSuccess } from "../utils/toast";
+import { ToastContainer } from "react-toastify";
 
 const Application = () => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [jobApplications, setJobApplications] = React.useState([]);
 
+  const [cvImg, setcvImg] = useState(null);
+  const [viewCV, setviewCV] = useState("");
+
   const { getToken } = useAuth();
+
+  useEffect(() => {
+    appliedJobs();
+    handleViewCv();
+  }, []);
 
   async function appliedJobs() {
     const token = await getToken();
@@ -33,12 +43,97 @@ const Application = () => {
       });
   }
 
-  useEffect(() => {
-    appliedJobs();
-  }, []);
+  const handleCVUpload = async () => {
+    if (!cvImg) {
+      alert("Please select a CV to upload");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("cv", cvImg);
 
-  const [cvImg, setcvImg] = useState(null);
+    const token = await getToken();
+    // console.log(token);
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cv/upload-cv`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("CV uploaded successfully:", data);
+        if (data.success) {
+          showSuccess("CV uploaded successfully!");
+          handleViewCv();
+          setIsEdit(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error uploading CV:", err);
+      });
+  };
   // console.log(cvImg.name)
+
+  // console.log("View CV URL:", viewCV);
+  const handleViewCv = async () => {
+    const token = await getToken();
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cv/my-cv`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("My CV data:", data);
+        console.log("CV URL:", data.cvUrl);
+        if (data && data.cvUrl) {
+          setviewCV(data.cvUrl);
+        } else {
+          setIsEdit(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching my CV:", err);
+      });
+  };
+
+  const handleEdit = () => {
+    setIsEdit(true);
+    // setcvImg(viewCV.split("-").slice(1).join("-"));
+  };
+
+  const handleEditCV = async () => {
+    if (!cvImg) {
+      showError("Please select a CV to update");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("cv", cvImg);
+    const token = await getToken();
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cv/update-cv`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log("CV updated successfully:", data);
+        if (data.success) {
+          showSuccess("CV updated successfully!");
+          handleViewCv();
+          setIsEdit(false);
+        }
+      })
+      .catch((err) => {
+        console.error("Error updating CV:", err);
+      });
+  };
 
   return (
     <div className="w-full bg-cyan-100">
@@ -49,64 +144,95 @@ const Application = () => {
       </div>
       <div className="max-w-[1200px] mx-auto pb-[50px]">
         <div className="w-full font-['Roboto'] p-5">
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold text-black mb-3">
+          <div className="mt-8 bg-white rounded-2xl shadow-lg p-6 border border-gray-100 transition-all hover:shadow-xl">
+            {/* Title */}
+            <h2 className="text-xl font-semibold text-gray-800 mb-5 tracking-wide">
               Your Resume
             </h2>
 
             {isEdit ? (
-              // ====================== EDIT MODE ======================
-              <div className="w-full flex flex-col sm:flex-row sm:items-center gap-4">
+              // ====================== SAVE MODE ======================
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                 {/* Upload Button */}
                 <label
                   htmlFor="uploadCV"
-                  className="flex items-center gap-2 border-1 bg-green-600/20 border-green-400 
-                  rounded-xl px-4 py-2 cursor-pointer hover:bg-green-600/30 
-                  transition-all text-gray-800 font-[400]"
+                  className="flex items-center justify-between gap-3 border border-green-400 
+        bg-green-50 hover:bg-green-100 text-gray-800 
+        px-5 py-3 rounded-xl cursor-pointer transition-all duration-300 
+        shadow-sm hover:shadow-md w-full sm:w-auto group"
                 >
-                  {cvImg ? <span>{cvImg.name}</span> : <span>Select CV</span>}
+                  <span className="truncate max-w-[180px] font-medium">
+                    {cvImg ? cvImg.name : "Select your CV"}
+                  </span>
+
+                  <MdCloudUpload
+                    size={26}
+                    className="text-blue-600 group-hover:scale-110 transition-transform"
+                  />
+
                   <input
                     id="uploadCV"
                     type="file"
+                    // value={cvImg ? cvImg.name? cvImg.name: cvImg : ""}
                     hidden
                     onChange={(e) => setcvImg(e.target.files[0])}
                   />
-                  <MdCloudUpload size={25} className="text-blue-700" />
                 </label>
 
                 {/* Save Button */}
-                <button
-                  onClick={() =>
-                    cvImg
-                      ? setIsEdit(false)
-                      : alert("Please select a CV to upload")
-                  }
-                  className="bg-blue-700 hover:bg-blue-800 transition-all text-white 
-                   px-6 py-2 rounded-xl shadow-md font-medium"
+                {
+                  !viewCV && (
+                    <button
+                  onClick={handleCVUpload}
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 
+        hover:from-blue-700 hover:to-blue-800 
+        text-white px-6 py-3 rounded-xl shadow-md 
+        font-medium transition-all duration-300 
+        hover:shadow-lg active:scale-95"
                 >
                   Save CV
                 </button>
+                  )
+                }
+
+                {/* Edit CV */}
+                {viewCV && (
+                  <button
+                    onClick={handleEditCV}
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 
+        hover:from-blue-700 hover:to-blue-800 
+        text-white px-6 py-3 rounded-xl shadow-md 
+        font-medium transition-all duration-300 
+        hover:shadow-lg active:scale-95"
+                  >
+                    Edit CV
+                  </button>
+                )}
               </div>
             ) : (
-              // ====================== VIEW MODE ======================
-              <div className="flex items-center gap-4 text-[15px]">
+              // ====================== EDIT MODE ======================
+              <div className="flex items-center gap-4">
                 {/* Resume Link */}
+                {/* ====================== VIEW MODE ====================== */}
                 <a
-                  href=""
-                  className="font-medium bg-blue-200 hover:bg-blue-300 transition-all 
-                   text-blue-800 px-5 py-1.5 rounded-2xl shadow-sm"
+                  href={`${import.meta.env.VITE_BACKEND_URL}/${viewCV}`}
+                  target="_blank"
+                  className="bg-blue-100 text-blue-700 px-5 py-2 rounded-xl 
+        font-medium shadow-sm hover:bg-blue-200 
+        transition-all duration-300 hover:shadow-md"
                 >
-                  Resume
+                  View Resume
                 </a>
 
                 {/* Edit Button */}
                 <button
-                  onClick={() => setIsEdit(true)}
-                  className="flex items-center gap-2 border border-gray-600 px-5 py-1.5 
-                   rounded-2xl cursor-pointer hover:bg-gray-100 transition-all"
+                  onClick={handleEdit}
+                  className="flex items-center gap-2 border border-gray-300 
+        px-5 py-2 rounded-xl hover:bg-gray-100 
+        transition-all duration-300 hover:shadow-sm active:scale-95"
                 >
-                  Edit
-                  <CiEdit size={22} className="text-green-600" />
+                  <CiEdit size={20} className="text-green-600" />
+                  <span className="font-medium">Edit</span>
                 </button>
               </div>
             )}
@@ -118,7 +244,9 @@ const Application = () => {
             </h2>
 
             {jobApplications.length === 0 ? (
-              <h2 className="py-[50px] text-center text-xl font-bold mb-4 text-gray-600">No Job Applied</h2>
+              <h2 className="py-[50px] text-center text-xl font-bold mb-4 text-gray-600">
+                No Job Applied
+              </h2>
             ) : (
               <>
                 {/* TABLE FOR DESKTOP - HIDDEN ON SMALL DEVICES */}
@@ -128,6 +256,7 @@ const Application = () => {
                       <tr className="bg-blue-600 text-white text-left">
                         <th className="py-3 px-4">Company</th>
                         <th className="py-3 px-4">Job Title</th>
+                        <th className="py-3 px-4">Resume</th>
                         <th className="py-3 px-4">Location</th>
                         <th className="py-3 px-4">Date</th>
                         <th className="py-3 px-4">Status</th>
@@ -153,6 +282,15 @@ const Application = () => {
 
                           <td className="py-3 px-4 text-gray-700">
                             {application.jobId?.title}
+                          </td>
+                          <td className="py-3 px-4">
+                            <a
+                              href={`${import.meta.env.VITE_BACKEND_URL}/${application.resumeUrl}`}
+                              target="_blank"
+                              className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50 cursor-pointer inline-block"
+                            >
+                              View CV
+                            </a>
                           </td>
                           <td className="py-3 px-4 text-gray-700">
                             {application.jobId?.location}
@@ -237,6 +375,7 @@ const Application = () => {
         </div>
       </div>
       <Footer />
+      <ToastContainer />
     </div>
   );
 };

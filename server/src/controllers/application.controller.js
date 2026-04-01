@@ -3,7 +3,7 @@ import {Job} from "../models/job.js";
 
 /* Candidate applies to job */
 export const applyJob = async (req, res) => {
-  const { jobId } = req.body;
+  const { jobId, resumeUrl } = req.body;
 
   const job = await Job.findById(jobId);
   if (!job) return res.status(404).json({ message: "Job not found" });
@@ -19,7 +19,8 @@ export const applyJob = async (req, res) => {
   const application = await Application.create({
     jobId,
     candidateId: req.user.id,
-    recruiterId: job.recruiterId
+    recruiterId: job.recruiterId,
+    resumeUrl: resumeUrl
   });
 
   res.status(201).json(application);

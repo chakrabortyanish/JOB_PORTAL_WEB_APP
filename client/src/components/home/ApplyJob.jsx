@@ -5,12 +5,16 @@ import { IoLocationSharp } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 
 import { useAuth, useClerk  } from "@clerk/clerk-react";
-import { showSuccess } from "../../utils/toast";
+import { showInfo, showSuccess } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
 
 const ApplyJob = ({ job, onClose, appliedjobs }) => {
   const { getToken, isSignedIn } = useAuth();
   const { openSignIn } = useClerk();
+
+    const navigate = useNavigate();
   
   const ApplyJob = useRef(null);
   // console.log(job);
@@ -22,6 +26,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
   };
 
   useEffect(() => {
+    handleViewCv();
     document.body.style.overflow = "hidden";
     document.querySelector("#overflow").style.overflow = "auto";
     return () => {
@@ -29,7 +34,44 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
     };
   }, []);
 
+  const [isCVExists, setIsCVExists] = React.useState(false);
+  const [cvUrl, setCvUrl] = React.useState(null);
+
+  // Check CV exists method
+  const handleViewCv = async () => {
+    const token = await getToken();
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cv/my-cv`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setIsCVExists(true);
+          setCvUrl(data.cvUrl);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching my CV:", err);
+      });
+  };
+
   const jobApply = async (id) => {
+
+    // Check if CV exists before applying
+    if(!isCVExists) {
+      showInfo("Please upload your CV before applying for a job.");
+      setTimeout(()=>{
+        navigate("/application");
+      }, 4000)
+      return;
+    }
+
+    console.log( "CV exists:", isCVExists);
+
     if (!isSignedIn) {
     openSignIn(); // or show login modal
     return;
@@ -41,7 +83,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ jobId: id }),
+      body: JSON.stringify({ jobId: id, resumeUrl: cvUrl}),
     })
       .then((res) => res.json())
       .then(() => {

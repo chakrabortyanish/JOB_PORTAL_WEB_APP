@@ -19,6 +19,11 @@ const applicationSchema = new mongoose.Schema(
       required: true
     },
 
+    resumeUrl: {
+      type: String,
+      required: true
+    },
+
     status: {
       type: String,
       enum: ["applied", "selected", "rejected"],

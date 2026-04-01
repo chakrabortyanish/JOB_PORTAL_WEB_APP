@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import cv from "../assets/Anish Chakraborty_CV.pdf";
+// import cv from "../assets/Anish Chakraborty_CV.pdf";
 import { useEffect } from "react";
 
 import { showError, showSuccess } from "../utils/toast";
@@ -33,7 +33,7 @@ export default function ViewApplications() {
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const pageSize = 5;
-  const [selected, setSelected] = useState(null); // for modal
+  const [selected, setSelected] = useState({}); // for modal
 
   const filtered = useMemo(() => {
     if (!query) return applications;
@@ -51,16 +51,16 @@ export default function ViewApplications() {
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paged = filtered.slice((page - 1) * pageSize, page * pageSize);
 
-  function handleDownload(url, name) {
+ /*  function handleDownload(url, name) {
     // simple download helper - opens in new tab
     const a = document.createElement("a");
-    a.href = url;
+    a.href = `${import.meta.env.VITE_BACKEND_URL}/${url}`;
     a.download = name || "resume.pdf";
     a.target = "_blank";
     document.body.appendChild(a);
     a.click();
     a.remove();
-  }
+  } */
 
   // console.log("Filtered applications: ", applications);
 
@@ -68,7 +68,7 @@ export default function ViewApplications() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center gap-1 min-w-[500px] w-full">
-        <Loader_2 />  
+        <Loader_2 />
         <p className="text-gray-500 text-sm">loading Applications...</p>
       </div>
     );
@@ -78,37 +78,35 @@ export default function ViewApplications() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const handleStatusChange = async (id, status) => {
-  try {
-    const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/applications/${id}/status`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/applications/${id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({ status }),
         },
-        
-        body: JSON.stringify({ status }),
-      }
-    );
-
-    const data = await res.json();
-
-    // console.log("Status update response:", data);
-
-    if (data.success) {
-      setApplications((prev) =>
-        prev.map((app) =>
-          app._id === id ? { ...app, status } : app
-        )
       );
 
-      showSuccess(data.message || "Status updated successfully");
+      const data = await res.json();
+
+      // console.log("Status update response:", data);
+
+      if (data.success) {
+        setApplications((prev) =>
+          prev.map((app) => (app._id === id ? { ...app, status } : app)),
+        );
+
+        showSuccess(data.message || "Status updated successfully");
+      }
+    } catch (err) {
+      console.error("Status update failed:", err);
+      showError("Failed to update status.", err.message);
     }
-  } catch (err) {
-    console.error("Status update failed:", err);
-    showError("Failed to update status.", err.message);
-  }
-};
+  };
 
   return (
     <div className="p-0">
@@ -208,23 +206,24 @@ export default function ViewApplications() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => setSelected(app)}
-                        className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50"
+                        onClick={() =>
+                          setSelected({
+                            resume: app.resumeUrl,
+                            userName: app.candidate?.name,
+                          })
+                        }
+                        className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50 cursor-pointer"
                       >
                         View
                       </button>
 
-                      <button
-                        onClick={() =>
-                          handleDownload(
-                            app.resumeUrl,
-                            `${app.userName}-resume.pdf`,
-                          )
-                        }
-                        className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50"
+                      {/* <a
+                        href={`${import.meta.env.VITE_BACKEND_URL}/${app.resumeUrl}`}
+                        download={`${app.candidate?.name ? app.candidate.name + "-CV" : "resume"}.pdf`}
+                        className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50 cursor-pointer inline-block"
                       >
                         Download
-                      </button>
+                      </a> */}
                     </div>
                   </td>
 
@@ -288,7 +287,7 @@ export default function ViewApplications() {
       </div>
 
       {/* Resume modal */}
-      {selected && (
+      {selected.resume && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white w-full max-w-3xl mx-4 rounded-lg shadow-lg overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3 border-b">
@@ -297,7 +296,7 @@ export default function ViewApplications() {
               </h3>
               <div className="flex items-center gap-2">
                 <a
-                  href={selected.resumeUrl}
+                  href={`${import.meta.env.VITE_BACKEND_URL}/${selected.resume}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm px-3 py-1 border rounded-md"
@@ -305,8 +304,8 @@ export default function ViewApplications() {
                   Open in new tab
                 </a>
                 <button
-                  onClick={() => setSelected(null)}
-                  className="px-3 py-1 rounded-md bg-gray-100"
+                  onClick={() => setSelected({})}
+                  className="px-3 py-1 rounded-md bg-gray-100 cursor-pointer hover:bg-gray-200 text-sm"
                 >
                   Close
                 </button>
@@ -316,9 +315,9 @@ export default function ViewApplications() {
             <div className="p-4 h-[70vh] overflow-auto">
               {/* show resume preview - if it's a pdf the browser will render it, otherwise link will open */}
               <iframe
-                src={cv}
+                src={`${import.meta.env.VITE_BACKEND_URL}/${selected.resume}`}
                 title="resume-preview"
-                className="w-full h-full border"
+                className="w-full h-full border-2"
               ></iframe>
             </div>
           </div>
