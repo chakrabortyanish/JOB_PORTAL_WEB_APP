@@ -55,7 +55,8 @@ Auto-login handled via /me API<br/>
 
 📸 Screens<br/>
 
-<img width="1297" height="539" alt="1" src="https://github.com/user-attachments/assets/979f37c7-1358-4049-8847-702606e75a1d" /><br/>
+<img width="1296" height="550" alt="image" src="https://github.com/user-attachments/assets/4eaf74fa-5951-401a-818f-641309375951" />
+<br/>
 <img width="1015" height="626" alt="2" src="https://github.com/user-attachments/assets/366e4c88-8812-4b7f-81b4-4cbfd70c48e2" /><br/>
 <img width="1267" height="622" alt="3" src="https://github.com/user-attachments/assets/68130a23-3f10-4694-b8c3-c5ec7bc9b466" /><br/>
 <img width="1341" height="315" alt="4" src="https://github.com/user-attachments/assets/5234ebad-5656-4714-9492-2bd94240ede7" /><br/>
