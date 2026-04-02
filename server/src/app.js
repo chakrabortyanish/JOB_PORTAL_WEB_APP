@@ -26,7 +26,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/uploads", express.static(path.join(process.cwd(), "src", "uploads")));
+app.use("/uploads", express.static(path.join(process.cwd(),"uploads")));
 app.use(cookieParser());
 app.use(clerkMiddleware());
 

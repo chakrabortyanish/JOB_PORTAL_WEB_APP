@@ -8,7 +8,7 @@ import fs from "fs";
   - Store images in local folder
 */
 
-const uploadPath = path.join(process.cwd(), "src", "uploads", "images");
+const uploadPath = path.join(process.cwd(),"uploads", "images");
 
 // Auto-create folder if missing
 if (!fs.existsSync(uploadPath)) {

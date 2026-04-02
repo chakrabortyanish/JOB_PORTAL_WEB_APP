@@ -2,7 +2,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-const cvPath = path.join(process.cwd(), "src/uploads/cv");
+const cvPath = path.join(process.cwd(), "uploads", "cv");
 
 // create folder if not exists
 if (!fs.existsSync(cvPath)) {
