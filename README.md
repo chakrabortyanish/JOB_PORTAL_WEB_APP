@@ -55,10 +55,12 @@ Auto-login handled via /me API<br/>
 
 📸 Screens<br/>
 
-<img width="1297" height="539" alt="1" src="https://github.com/user-attachments/assets/979f37c7-1358-4049-8847-702606e75a1d" /><br/>
+<img width="1296" height="550" alt="image" src="https://github.com/user-attachments/assets/4eaf74fa-5951-401a-818f-641309375951" />
+<br/>
 <img width="1015" height="626" alt="2" src="https://github.com/user-attachments/assets/366e4c88-8812-4b7f-81b4-4cbfd70c48e2" /><br/>
 <img width="1267" height="622" alt="3" src="https://github.com/user-attachments/assets/68130a23-3f10-4694-b8c3-c5ec7bc9b466" /><br/>
-<img width="1341" height="315" alt="4" src="https://github.com/user-attachments/assets/5234ebad-5656-4714-9492-2bd94240ede7" /><br/>
+<img width="1275" height="360" alt="image" src="https://github.com/user-attachments/assets/db08d35c-b6fc-4784-87ea-d928bf8023a7" />
+<br/>
 <img width="1055" height="640" alt="5" src="https://github.com/user-attachments/assets/0d28b882-20ac-4e01-9b59-bcb93af9c8de" /><br/>
 <img width="1119" height="655" alt="6" src="https://github.com/user-attachments/assets/1b54fab8-a2eb-4dd3-aedf-2119ef01b199" /><br/>
 <img width="1308" height="643" alt="7" src="https://github.com/user-attachments/assets/1aede8df-cb5e-4d02-b0c6-4c61606a7da0" /><br/>
