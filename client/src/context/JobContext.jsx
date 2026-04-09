@@ -20,6 +20,7 @@ export const JobContextProvider = ({ children }) => {
   // recruiter profile manage
   const [editMode, setEditMode] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+  const [userAppliedjobs, setUserAppliedjobs] = useState(false);
 
   /* useEffect(() => {
   fetch(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`)
@@ -54,6 +55,8 @@ const fetchJobs = async () => {
     setEditMode,
     openProfile,
     setOpenProfile,
+    userAppliedjobs,
+    setUserAppliedjobs
   };
 
   return <JobContext.Provider value={value}>{children}</JobContext.Provider>;

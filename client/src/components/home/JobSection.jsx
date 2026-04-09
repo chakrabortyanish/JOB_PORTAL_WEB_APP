@@ -20,6 +20,17 @@ import { useAuth } from "@clerk/clerk-react";
 import Loader from "../../utils/loading.jsx";
 
 const JobSection = () => {
+  const {
+    searchJob,
+    setSearchJob,
+    isSearched,
+    jobs,
+    setJobs,
+    originalJobs,
+    fetchJobs,
+    userAppliedjobs,
+  } = React.useContext(JobContext);
+
   // start fetch applied jobs
   const [appliedjobs, setAppliedjobs] = useState([]);
 
@@ -47,7 +58,7 @@ const JobSection = () => {
 
   useEffect(() => {
     appliedJobs();
-  }, []);
+  }, [userAppliedjobs]);
 
   // end fetch applied jobs
 
@@ -56,16 +67,6 @@ const JobSection = () => {
 
   // loading state
   const [loading, setLoading] = useState(true);
-
-  const {
-    searchJob,
-    setSearchJob,
-    isSearched,
-    jobs,
-    setJobs,
-    originalJobs,
-    fetchJobs,
-  } = React.useContext(JobContext);
 
   useEffect(() => {
     const loadData = async () => {

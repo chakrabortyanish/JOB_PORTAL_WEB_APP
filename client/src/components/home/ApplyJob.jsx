@@ -4,18 +4,22 @@ import "./style.css"; // Assuming you have a styles.css file for custom styles
 import { IoLocationSharp } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 
-import { useAuth, useClerk  } from "@clerk/clerk-react";
+import { useAuth, useClerk } from "@clerk/clerk-react";
 import { showInfo, showSuccess } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 
+import { JobContext } from "../../context/JobContext";
+
 const ApplyJob = ({ job, onClose, appliedjobs }) => {
+  const { setUserAppliedjobs } = React.useContext(JobContext);
+
   const { getToken, isSignedIn } = useAuth();
   const { openSignIn } = useClerk();
 
-    const navigate = useNavigate();
-  
+  const navigate = useNavigate();
+
   const ApplyJob = useRef(null);
   // console.log(job);
 
@@ -60,22 +64,21 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
   };
 
   const jobApply = async (id) => {
-
     // Check if CV exists before applying
-    if(!isCVExists) {
+    if (!isCVExists) {
       showInfo("Please upload your CV before applying for a job.");
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate("/application");
-      }, 4000)
+      }, 4000);
       return;
     }
 
-    console.log( "CV exists:", isCVExists);
+    // console.log("CV exists:", isCVExists);
 
     if (!isSignedIn) {
-    openSignIn(); // or show login modal
-    return;
-  }
+      openSignIn(); // or show login modal
+      return;
+    }
     const token = await getToken();
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications`, {
       method: "POST",
@@ -83,14 +86,15 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ jobId: id, resumeUrl: cvUrl}),
+      body: JSON.stringify({ jobId: id, resumeUrl: cvUrl }),
     })
       .then((res) => res.json())
       .then(() => {
         showSuccess("Job applied successfully!");
-        setTimeout(()=>{
-          window.location.reload();
-        }, 4000)
+        setTimeout(() => {
+          setUserAppliedjobs(true);
+          onClose();
+        }, 2000);
       })
       .catch((err) => {
         console.error("Error applying for job:", err);
@@ -168,15 +172,15 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
                 </button>
               ) : (
                 <button
-                onClick={() => {
-                  jobApply(job._id);
-                }}
-                className="px-5 py-2.5 cursor-pointer font-semibold text-white bg-blue-600 rounded-xl shadow-md hover:bg-blue-700 hover:shadow-lg active:scale-95 transition-all"
-              >
-                Apply Now
-              </button>
+                  onClick={() => {
+                    jobApply(job._id);
+                  }}
+                  className="px-5 py-2.5 cursor-pointer font-semibold text-white bg-blue-600 rounded-xl shadow-md hover:bg-blue-700 hover:shadow-lg active:scale-95 transition-all"
+                >
+                  Apply Now
+                </button>
               )}
-              
+
               <p className="text-[13px] font-[600] text-gray-700">
                 Posted {new Date(job.createdAt).toLocaleDateString()}
               </p>
@@ -226,16 +230,16 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
           </div>
           <div className="w-full flex justify-center mt-6">
             {appliedjobs.some(
-                (appliedJob) => appliedJob.jobId?._id === job._id,
-              ) ? (
-                <button
-                  disabled
-                  className=" bg-gray-400 text-white px-4 py-1 border-1 rounded cursor-not-allowed"
-                >
-                  Applied
-                </button>
-              ) : (
-                <button
+              (appliedJob) => appliedJob.jobId?._id === job._id,
+            ) ? (
+              <button
+                disabled
+                className=" bg-gray-400 text-white px-4 py-1 border-1 rounded cursor-not-allowed"
+              >
+                Applied
+              </button>
+            ) : (
+              <button
                 onClick={() => {
                   jobApply(job._id);
                 }}
@@ -243,7 +247,7 @@ const ApplyJob = ({ job, onClose, appliedjobs }) => {
               >
                 Apply Now
               </button>
-              )}
+            )}
           </div>
         </div>
       </div>
