@@ -1,42 +1,41 @@
 # CAREERONIX
-A Job Portal web application currently under development. 
-The project focuses on building a secure recruiter dashboard, authentication system, and scalable backend architecture. 
+#### A Job Portal web application currently under development. The project focuses on building a secure recruiter dashboard, authentication system, and scalable backend architecture. 
 Candidate-side features such as job browsing and applications are planned and under active development.<br/>
 
-## LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
+### LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
 
-🚀 Features<br/>
+## 🚀 Features<br/>
 
-👤 Candidate<br/>
+#### 👤 Candidate<br/>
 
 Browse available jobs<br/> 
 Apply for jobs<br/>
 View applied job status<br/>
 Secure authentication<br/>
 
-🧑‍💼 Recruiter<br/>
+#### 🧑‍💼 Recruiter<br/>
 
 Recruiter login & dashboard<br/>
 Create and manage job postings<br/>
 View job applications<br/>
 Manage candidate applications<br/> 
 
-🔐 Authentication & Security<br/>
+## 🔐 Authentication & Security<br/>
 
 JWT authentication using httpOnly cookies<br/>
 Auto-login with session persistence<br/>
 Protected routes for recruiters<br/>
 Secure logout<br/>
 
-🛠 Tech Stack<br/>
+## 🛠 Tech Stack<br/>
 
-Frontend<br/>
+#### Frontend<br/>
 React.js<br/>
 React Router<br/>
 Tailwind CSS<br/>
 Fetch API<br/>
 
-Backend<br/>
+#### Backend<br/>
 
 Node.js<br/>
 Express.js<br/>
@@ -45,7 +44,7 @@ JWT (Authentication)<br/>
 Cookie-based auth<br/>
 CORS configured securely<br/>
 
-🔄 Authentication Flow<br/>
+#### 🔄 Authentication Flow<br/>
 
 User logs in<br/>
 Backend creates JWT<br/>
@@ -53,7 +52,7 @@ JWT stored in httpOnly cookie<br/>
 Cookie sent automatically with requests<br/>
 Auto-login handled via /me API<br/>
 
-📸 Screens<br/>
+## 📸 Screens<br/>
 
 <img width="1296" height="550" alt="image" src="https://github.com/user-attachments/assets/4eaf74fa-5951-401a-818f-641309375951" />
 <br/>
@@ -72,7 +71,7 @@ Auto-login handled via /me API<br/>
 <img width="437" height="405" alt="13" src="https://github.com/user-attachments/assets/7831d132-4e1b-4338-b1fc-e383dfa2676b" />
 <img width="379" height="384" alt="14" src="https://github.com/user-attachments/assets/46974133-8a44-40d3-beab-f6e379ba75f5" /><br/>
 
-🌱 Future Improvements<br/>
+#### 🌱 Future Improvements<br/>
 
 Resume upload (PDF)<br/>
 Email notifications<br/>
@@ -81,10 +80,7 @@ Role-based permissions<br/>
 Pagination & search<br/>
 Analytics dashboard<br/>
 
-⭐ Support<br/>
-
-If you like this project, please ⭐ star the repository.<br/>
-Feedback and suggestions are always welcome!<br/>
+<div style="text-center">Thank You</div>
 
 
 
