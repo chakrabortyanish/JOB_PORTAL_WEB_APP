@@ -33,6 +33,15 @@ const Navbar = () => {
         <div className="flex font-[1rem] font-['Roboto']">
           {user ? (
             <div className="flex items-center gap-3">
+               {/* AI Resume Analyzer */}
+            <a href="https://ai-resume-analyzer-steel-beta.vercel.app/" target="_blank" rel="noopener noreferrer" className="cursor-pointer">
+              <button
+              className="cursor-pointer relative overflow-hidden px-5 py-2 rounded-full bg-gradient-to-r from-violet-600 via-blue-600 to-cyan-500 text-white font-medium text-[15px] shadow-lg hover:scale-105 transition-all duration-300 before:absolute before:inset-0 before:bg-white/20 before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700"
+            >
+              ✨ AI Resume Analyzer
+            </button>
+            </a>
+
               <button className="cursor-pointer hover:text-gray-400" onClick={handleNavigate}>Apply Jobs</button>
               <span className="text-gray-500">|</span>
               <p className="flex gap-1.5">
