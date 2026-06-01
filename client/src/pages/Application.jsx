@@ -26,6 +26,7 @@ const Application = () => {
 
   async function appliedJobs() {
     const token = await getToken();
+    // console.log("Token for fetching applied jobs:", token);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications/my`, {
       method: "GET",
       headers: {
@@ -87,10 +88,9 @@ const Application = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log("My CV data:", data);
-        console.log("CV URL:", data.cvUrl);
-        if (data && data.cvUrl) {
+        if (data.success) {
           setviewCV(data.cvUrl);
+          // console.log("CV URL set to:", viewCV);
         } else {
           setIsEdit(true);
         }
@@ -114,6 +114,7 @@ const Application = () => {
     const formData = new FormData();
     formData.append("cv", cvImg);
     const token = await getToken();
+    // console.log("token",token);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cv/update-cv`, {
       method: "PUT",
       headers: {
@@ -197,16 +198,28 @@ const Application = () => {
 
                 {/* Edit CV */}
                 {viewCV && (
-                  <button
-                    onClick={handleEditCV}
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 
-        hover:from-blue-700 hover:to-blue-800 
-        text-white px-6 py-3 rounded-xl shadow-md 
-        font-medium transition-all duration-300 
-        hover:shadow-lg active:scale-95"
-                  >
-                    Edit CV
-                  </button>
+                  <>
+                    <button
+                      onClick={handleEditCV}
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 
+          hover:from-blue-700 hover:to-blue-800 
+          text-white px-6 py-3 rounded-xl shadow-md 
+          font-medium transition-all duration-300 
+          hover:shadow-lg active:scale-95 cursor-pointer"
+                    >
+                      Edit CV
+                    </button>
+                    <button
+                      onClick={() => setIsEdit(false)}
+                      className="bg-gradient-to-r from-red-600 to-red-700 
+          hover:from-red-700 hover:to-red-800
+          text-white px-6 py-3 rounded-xl shadow-md 
+          font-medium transition-all duration-300 
+          hover:shadow-lg active:scale-95 cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </>
                 )}
               </div>
             ) : (
@@ -215,7 +228,7 @@ const Application = () => {
                 {/* Resume Link */}
                 {/* ====================== VIEW MODE ====================== */}
                 <a
-                  href={`${import.meta.env.VITE_BACKEND_URL}/${viewCV}`}
+                  href={viewCV}
                   target="_blank"
                   className="bg-blue-100 text-blue-700 px-5 py-2 rounded-xl 
         font-medium shadow-sm hover:bg-blue-200 
@@ -285,7 +298,7 @@ const Application = () => {
                           </td>
                           <td className="py-3 px-4">
                             <a
-                              href={`${import.meta.env.VITE_BACKEND_URL}/${application.resumeUrl}`}
+                              href={application.resumeUrl}
                               target="_blank"
                               className="text-sm px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50 cursor-pointer inline-block"
                             >

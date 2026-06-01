@@ -34,7 +34,7 @@ const RecruterLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("image_file:", image);
+    // console.log("image_file:", image);
     if (!image && mode === "signup") {
       alert("Please upload a company logo.");
       return;

@@ -56,7 +56,7 @@ const RecruiterProfileModal = ({recruiter }) => {
     setEditMode(false);
 
     // 🔥 API call here
-    console.log("Updated Data:", formData);
+    // console.log("Updated Data:", formData);
   };
 
   return (

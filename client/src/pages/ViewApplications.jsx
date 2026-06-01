@@ -76,7 +76,6 @@ export default function ViewApplications() {
 
   // handle status change
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const handleStatusChange = async (id, status) => {
     try {
       const res = await fetch(
@@ -296,7 +295,7 @@ export default function ViewApplications() {
               </h3>
               <div className="flex items-center gap-2">
                 <a
-                  href={`${import.meta.env.VITE_BACKEND_URL}/${selected.resume}`}
+                  href={selected.resume}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm px-3 py-1 border rounded-md"
@@ -315,7 +314,7 @@ export default function ViewApplications() {
             <div className="p-4 h-[70vh] overflow-auto">
               {/* show resume preview - if it's a pdf the browser will render it, otherwise link will open */}
               <iframe
-                src={`${import.meta.env.VITE_BACKEND_URL}/${selected.resume}`}
+                src={selected.resume}
                 title="resume-preview"
                 className="w-full h-full border-2"
               ></iframe>
