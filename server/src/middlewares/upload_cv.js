@@ -52,6 +52,7 @@ import cloudinary from "../config/cloudinary.config.js";
   }
 };
  */
+
 // Cloudinary storage
 const storage = new CloudinaryStorage({
   cloudinary,

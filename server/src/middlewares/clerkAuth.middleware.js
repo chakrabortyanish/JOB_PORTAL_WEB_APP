@@ -1,22 +1,30 @@
-import  {getAuth}   from "@clerk/express";
+import { requireAuth } from "@clerk/express";
 
-export const protectUser = async (req, res, next) => {
-  // console.log("ProtectUser middleware called");
-  try {
-    const auth = getAuth(req);
+export const protectUser = [
+  requireAuth(),
+  (req, res, next) => {
+    try {
+      const { userId } = req.auth();
 
-    // console.log("Clerk auth:", auth.userId);
+      // console.log("User ID:", userId);
 
-  if (!auth.userId) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: "Unauthorized: No userId found",
+        });
+      }
 
-    req.user = {
-      id: auth.userId // Clerk userId
-    };
+      req.user = { id: userId };
 
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
-};
+      next();
+    } catch (error) {
+      console.error("Auth Middleware Error:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  },
+];

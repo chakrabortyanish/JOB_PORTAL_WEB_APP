@@ -5,16 +5,20 @@ import UserCV from "../models/userCV.model.js";
 // Upload CV method
 export const uploadCV = async (req, res) => {
   try {
-    const filePath = `uploads/cv/${req.file.filename}`;
+    // console.log("REQ FILE:", req.file);
+    // console.log("REQ USER:", req.user);
 
-    if (!filePath) {
-      return res.status(400).json({ error: "No file uploaded" });
+     if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded"
+      });
     }
 
     // save to DB
     const user = await UserCV.create({
       clerkId: req.user.id,
-      cvUrl: filePath
+      cvUrl: req.file.path, // store the Cloudinary URL
     });
 
     res.json({
@@ -30,13 +34,13 @@ export const uploadCV = async (req, res) => {
 // Get CV method
 
 export const viewCV = async (req, res) => {
-    console.log("ViewCV controller called for user:", req.user.id);
+    // console.log("ViewCV controller called for user:", req.user.id);
     try {
         const userCV = await UserCV.findOne({ clerkId: req.user.id });
         if (!userCV) {
             return res.status(404).json({ message: "CV not found" });
         }
-        console.log("CV URL:", userCV.cvUrl);
+        // console.log("CV URL:", userCV.cvUrl);
         res.json({ cvUrl: userCV.cvUrl, success: true });
     } catch (error) {
         console.error("Error fetching CV:", error);
@@ -47,16 +51,18 @@ export const viewCV = async (req, res) => {
 // update CV method
 export const updateCV = async (req, res) => {
   try {
-    const filePath = `uploads/cv/${req.file.filename}`;
 
-    if (!filePath) {
-      return res.status(400).json({ error: "No file uploaded" });
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file uploaded"
+      });
     }
 
     // update in DB
     const userCV = await UserCV.findOneAndUpdate(
       { clerkId: req.user.id },
-      { cvUrl: filePath },
+      { cvUrl: req.file.path },
       { new: true }
     );
 

@@ -70,11 +70,11 @@ const handleRecruiterEdit = async (req, res) => {
   try {
     const updatedUser = await Recruiter.findByIdAndUpdate(
       req.userId,                  // from JWT
-      { $set: { name, email } },    // password update
+      { $set: { name, email } },   
       { new: true }
     ).select("-password");
 
-    console.log("Updated User:", updatedUser);
+    // console.log("Updated User:", updatedUser);
     res.status(200).json({ message: "Profile updated", success:true, user: updatedUser });
   } catch (err) {
     res.status(500).json({ message: "Update failed" });
