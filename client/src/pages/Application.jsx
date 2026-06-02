@@ -5,7 +5,6 @@ import { MdCloudUpload } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 
 // import { jobsApplied } from "../assets/assets/assets";
-import Loader from "../utils/loading.jsx";
 
 import { useAuth } from "@clerk/clerk-react";
 import { showError, showSuccess } from "../utils/toast";
@@ -14,7 +13,6 @@ import { ToastContainer } from "react-toastify";
 const Application = () => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [jobApplications, setJobApplications] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
 
   const [cvImg, setcvImg] = useState(null);
   const [viewCV, setviewCV] = useState("");
@@ -27,7 +25,6 @@ const Application = () => {
   }, []);
 
   async function appliedJobs() {
-    setLoading(true);
     const token = await getToken();
     // console.log("Token for fetching applied jobs:", token);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/applications/my`, {
@@ -40,16 +37,10 @@ const Application = () => {
       .then((res) => res.json())
       .then((data) => {
         // console.log("Jobs applied data:", data);
-        if (data.success) {
-          // console.log("Applied jobs from API: ", loading);
-          setJobApplications(data.apps);
-        }
+        setJobApplications(data);
       })
       .catch((err) => {
         console.error("Error fetching applied jobs:", err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   }
 
@@ -190,18 +181,20 @@ const Application = () => {
                 </label>
 
                 {/* Save Button */}
-                {!viewCV && (
-                  <button
-                    onClick={handleCVUpload}
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 
+                {
+                  !viewCV && (
+                    <button
+                  onClick={handleCVUpload}
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 
         hover:from-blue-700 hover:to-blue-800 
         text-white px-6 py-3 rounded-xl shadow-md 
         font-medium transition-all duration-300 
         hover:shadow-lg active:scale-95"
-                  >
-                    Save CV
-                  </button>
-                )}
+                >
+                  Save CV
+                </button>
+                  )
+                }
 
                 {/* Edit CV */}
                 {viewCV && (
@@ -263,17 +256,10 @@ const Application = () => {
               Jobs Applied
             </h2>
 
-            {loading ? (
-              <div className="flex flex-col items-center mt-[10px] gap-4 w-full">
-                    <Loader />
-                    <p className="text-gray-500 text-sm">Loading...</p>
-                  </div>
-            ):(
-              <>
-              {jobApplications.length === 0 ? (
-                  <h2 className="py-[50px] text-center text-xl font-bold mb-4 text-gray-600">
-                    No Job Applied
-                  </h2>
+            {jobApplications.length === 0 ? (
+              <h2 className="py-[50px] text-center text-xl font-bold mb-4 text-gray-600">
+                No Job Applied
+              </h2>
             ) : (
               <>
                 {/* TABLE FOR DESKTOP - HIDDEN ON SMALL DEVICES */}
@@ -396,8 +382,6 @@ const Application = () => {
                     </div>
                   ))}
                 </div>
-              </>
-            )}
               </>
             )}
           </div>

@@ -33,10 +33,10 @@ export const getMyApplications = async (req, res) => {
   }).populate("jobId");
 
   // console.log("Applied jobs: ",apps);
-  res.status(200).json({apps, success: true, });
+  res.status(200).json(apps);
 };
 
-/* Recruiter received applications */ 
+/* Recruiter received applications */
 import { clerkClient } from  "@clerk/express";
 
 export const getReceivedApplications = async (req, res) => {
