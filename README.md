@@ -30,19 +30,19 @@ Secure logout<br/>
 ## 🛠 Tech Stack<br/>
 
 #### Frontend<br/>
-React.js<br/>
-React Router<br/>
-Tailwind CSS<br/>
-Fetch API<br/>
+    React.js<br/>
+    React Router<br/>
+    Tailwind CSS<br/>
+    Fetch API<br/>
 
 #### Backend<br/>
-
-Node.js<br/>
-Express.js<br/>
-MongoDB<br/>
-JWT (Authentication)<br/>
-Cookie-based auth<br/>
-CORS configured securely<br/>
+    Node.js<br/>
+    Express.js<br/>
+    MongoDB<br/>
+    JWT (Authentication)<br/>
+    Cookie-based auth<br/>
+    CORS configured securely<br/>
+    Cloudinary<br/>
 
 #### 🔄 Authentication Flow<br/>
 
@@ -71,14 +71,6 @@ Auto-login handled via /me API<br/>
 <img width="437" height="405" alt="13" src="https://github.com/user-attachments/assets/7831d132-4e1b-4338-b1fc-e383dfa2676b" />
 <img width="379" height="384" alt="14" src="https://github.com/user-attachments/assets/46974133-8a44-40d3-beab-f6e379ba75f5" /><br/>
 
-#### 🌱 Future Improvements<br/>
-
-Resume upload (PDF)<br/>
-Email notifications<br/>
-Admin panel<br/>
-Role-based permissions<br/>
-Pagination & search<br/>
-Analytics dashboard<br/>
 
 <div style="text-center">Thank You</div>
 
