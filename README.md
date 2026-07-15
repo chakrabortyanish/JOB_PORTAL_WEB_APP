@@ -8,49 +8,48 @@ Candidate-side features such as job browsing and applications are planned and un
 
 #### 👤 Candidate<br/>
 
-Browse available jobs<br/> 
-Apply for jobs<br/>
-View applied job status<br/>
-Secure authentication<br/>
+    Browse available jobs
+    Apply for jobs
+    View applied job status
+    Secure authentication
 
 #### 🧑‍💼 Recruiter<br/>
 
-Recruiter login & dashboard<br/>
-Create and manage job postings<br/>
-View job applications<br/>
-Manage candidate applications<br/> 
+    Recruiter login & dashboard
+    Create and manage job postings
+    View job applications
+    Manage candidate applications
 
 ## 🔐 Authentication & Security<br/>
 
-JWT authentication using httpOnly cookies<br/>
-Auto-login with session persistence<br/>
-Protected routes for recruiters<br/>
-Secure logout<br/>
+    JWT authentication using httpOnly cookies
+    Auto-login with session persistence
+    Protected routes for recruiters
+    Secure logout
 
 ## 🛠 Tech Stack<br/>
 
 #### Frontend<br/>
-    React.js<br/>
-    React Router<br/>
-    Tailwind CSS<br/>
-    Fetch API<br/>
+    React.js
+    React Router
+    Tailwind CSS
+    Fetch API
 
 #### Backend<br/>
-    Node.js<br/>
-    Express.js<br/>
-    MongoDB<br/>
-    JWT (Authentication)<br/>
-    Cookie-based auth<br/>
-    CORS configured securely<br/>
-    Cloudinary<br/>
+    Node.js
+    Express.js
+    MongoDB
+    JWT (Authentication)
+    Cookie-based auth
+    CORS configured securely
 
 #### 🔄 Authentication Flow<br/>
 
-User logs in<br/>
-Backend creates JWT<br/>
-JWT stored in httpOnly cookie<br/>
-Cookie sent automatically with requests<br/>
-Auto-login handled via /me API<br/>
+    User logs in
+    Backend creates JWT
+    JWT stored in httpOnly cookie
+    Cookie sent automatically with requests
+    Auto-login handled via /me API
 
 ## 📸 Screens<br/>
 
@@ -72,8 +71,7 @@ Auto-login handled via /me API<br/>
 <img width="379" height="384" alt="14" src="https://github.com/user-attachments/assets/46974133-8a44-40d3-beab-f6e379ba75f5" /><br/>
 
 
-<div style="text-center">Thank You</div>
-
+### ⭐ If you find this project helpful, please give it a star!
 
 
 
