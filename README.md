@@ -64,8 +64,8 @@ Candidate-side features such as job browsing and applications are planned and un
 <img width="1055" height="640" alt="5" src="https://github.com/user-attachments/assets/0d28b882-20ac-4e01-9b59-bcb93af9c8de" /><br/>
 <img width="1119" height="655" alt="6" src="https://github.com/user-attachments/assets/1b54fab8-a2eb-4dd3-aedf-2119ef01b199" /><br/>
 <img width="1308" height="643" alt="7" src="https://github.com/user-attachments/assets/1aede8df-cb5e-4d02-b0c6-4c61606a7da0" /><br/>
-<img width="467" height="467" alt="8" src="https://github.com/user-attachments/assets/2b3e072c-5750-40cb-87ea-1a834e4dba64" />
-<img width="467" height="467" alt="9" src="https://github.com/user-attachments/assets/a5c7290d-ef80-44dc-a76d-b9846bf856e1" />
+<img width="390" height="400" alt="8" src="https://github.com/user-attachments/assets/2b3e072c-5750-40cb-87ea-1a834e4dba64" />
+<img width="390" height="400" alt="9" src="https://github.com/user-attachments/assets/a5c7290d-ef80-44dc-a76d-b9846bf856e1" />
 <img width="1234" height="652" alt="10" src="https://github.com/user-attachments/assets/0da84cae-6ffc-45fc-a073-24a08569ab35" /><br/>
 <img width="1125" height="652" alt="11" src="https://github.com/user-attachments/assets/e98a5d88-0a7c-4725-9356-46d25a5cbbd1" /><br/>
 <img width="1109" height="639" alt="12" src="https://github.com/user-attachments/assets/407c1560-4a04-40ec-b9b5-9fd7efd1e2bd" /><br/>
