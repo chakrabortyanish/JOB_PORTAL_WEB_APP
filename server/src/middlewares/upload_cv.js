@@ -37,21 +37,6 @@ import multer from "multer";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "../config/cloudinary.config.js";
 
-// File filter (security)
-/* const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ];
-
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only PDF, DOC, DOCX files are allowed"), false);
-  }
-};
- */
 
 // Cloudinary storage
 const storage = new CloudinaryStorage({

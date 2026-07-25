@@ -10,6 +10,7 @@ import recruiterRouter from "./routes/recruiters.js";
 import jobRouter from "./routes/job.routes.js";
 import applicationRouter from "./routes/application.routes.js";
 import CVRouter from "./routes/uploadCV.routes.js";
+import { notificationRouter } from "./routes/notification.routes.js";
 
 import path from "path";
 
@@ -35,3 +36,4 @@ app.use("/api/recruiter", recruiterRouter);
 app.use("/api/jobs", jobRouter);
 app.use("/api/applications", applicationRouter);
 app.use("/api/cv", CVRouter);
+app.use("/api/notifications", notificationRouter);

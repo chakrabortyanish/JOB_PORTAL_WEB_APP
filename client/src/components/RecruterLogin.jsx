@@ -55,7 +55,8 @@ const RecruterLogin = () => {
           }),
         }
       );
-
+      
+      // console.log("response: ", response);
       const result = await response.json();
       const { message, success } = result;
       // console.log("message: ", message, success);

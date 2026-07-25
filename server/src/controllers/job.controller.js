@@ -1,4 +1,6 @@
 import { Job } from "../models/job.js";
+import UserCV from "../models/userCV.model.js";
+import { Notification } from "../models/notification.model.js";
 
 /* Recruiter creates job */
 export const createJob = async (req, res) => {
@@ -7,6 +9,19 @@ export const createJob = async (req, res) => {
       ...req.body,
       recruiterId: req.userId,
     });
+
+    const users = await UserCV.find({}, "clerkId");
+
+    // Create notification documents
+    const notifications = users.map((user) => ({
+      receiverId: user.clerkId,
+      title: "New Job",
+      message: `${job.title} position is now open.`,
+      type: "NEW_JOB",
+    }));
+
+    // Save all notifications in one query
+    await Notification.insertMany(notifications);
 
     res
       .status(201)
@@ -21,7 +36,7 @@ export const createJob = async (req, res) => {
 /* Recruiter jobs */
 export const getMyJobs = async (req, res) => {
   const jobs = await Job.find({ recruiterId: req.userId });
-  res.json({jobs , success: true });
+  res.json({ jobs, success: true });
 };
 
 /* Public job list */
