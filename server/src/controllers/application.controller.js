@@ -102,7 +102,7 @@ function getNotificationMessage(status, job) {
       return `Congratulations! You have been selected for ${job}.`;
 
     default:
-      return `Your application status has been updated to ${status} for ${job}.`;
+      return `Your application status for the ${jobTitle} position has been updated to ${status}.`;
   }
 }
 
@@ -115,7 +115,8 @@ export const updateApplicationStatus = async (req, res) => {
       id,
       { status },
       { new: true }
-    ).populate("jobId");
+    ).populate("jobId", "title");
+
 
     if (!application) {
       return res.status(404).json({ success: false, message: "Application not found" });
