@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import logo from "../../assets/job-logo-removebg-preview.png";
 import { JobContext } from "../../context/JobContext";
-import { Notification } from "./Notification.jsx";
+import  Notification  from "./Notification.jsx";
 
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,9 @@ const Navbar = () => {
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   // console.log(notifications);
+
   const { getToken } = useAuth();
+  // fetch all notifications
   const handleNotification = async () => {
     const token = await getToken();
     // console.log(token);
@@ -55,7 +57,7 @@ const Navbar = () => {
     }
   };
 
-  // fetch unread nofications count
+  // fetch unread notifications count
   const getUnreadNotificationCount = async () => {
     const token = await getToken();
     try {
@@ -71,19 +73,48 @@ const Navbar = () => {
         },
       );
       const data = await res.json();
-      console.log("data: ", data);
       if (data.success) {
         setUnreadNotificationCount(data.count);
       }
-
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
-  }
+  };
+
   useEffect(() => {
     getUnreadNotificationCount();
-    handleNotification();
   }, []);
+
+  const updateAllNotification = async () => {
+    const token = await getToken();
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/notifications/update-all`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        },
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        await getUnreadNotificationCount();
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  const handleNotificationClick = async () => {
+    setOpen(true);
+    await handleNotification();
+    await updateAllNotification();
+  };
 
   return (
     <div>
@@ -120,7 +151,7 @@ const Navbar = () => {
               {/* Notification Bell */}
               <button
                 className="relative cursor-pointer"
-                onClick={() => setOpen(true)}
+                onClick={handleNotificationClick}
               >
                 <IoNotificationsOutline fontSize={22} />
                 {/* Unread Count */}
@@ -158,7 +189,11 @@ const Navbar = () => {
       </div>
 
       {open && (
-        <Notification notifications={notifications} open={open} setOpen={setOpen} />
+        <Notification
+          notifications={notifications}
+          open={open}
+          setOpen={setOpen}
+        />
       )}
     </div>
   );

@@ -1,10 +1,10 @@
 import React from "react";
 import { GiCrossedBones } from "react-icons/gi";
 
-export const Notification = ({notifications, open, setOpen}) => {
+const Notification = ({notifications, open, setOpen}) => {
   return (
     <div
-      className={`fixed top-0 right-0 h-screen w-[360px] bg-white shadow-xl z-50 border-l border-gray-100 transition-transform duration-300 ease-in-out ${
+      className={`fixed top-0 right-0 h-screen w-[300px] bg-white shadow-xl z-50 border-l border-gray-100 transition-transform duration-300 ease-in-out ${
         open ? "translate-x-0" : "translate-x-full"
       }`}
     >
@@ -73,3 +73,5 @@ export const Notification = ({notifications, open, setOpen}) => {
     </div>
   );
 };
+
+export default React.memo(Notification);

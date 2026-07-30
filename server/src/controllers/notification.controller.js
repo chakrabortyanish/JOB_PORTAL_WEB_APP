@@ -22,7 +22,7 @@ const getNotifications = async (req, res) => {
   }
 };
 
- const getUnreadNotificationCount = async (req, res) => {
+const getUnreadNotificationCount = async (req, res) => {
   try {
     const clerkId = req.user.id;
 
@@ -43,4 +43,44 @@ const getNotifications = async (req, res) => {
   }
 };
 
-export { getNotifications, getUnreadNotificationCount };
+const updateNotificationReadStatus = async (req, res) => {
+  try {
+    const clerkId = req.user.id;
+
+    const result = await Notification.updateMany(
+      {
+        receiverId: clerkId,
+        isRead: false,
+      },
+      {
+        $set: {
+          isRead: true,
+        },
+      },
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No unread notifications found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Notification marked as read",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to mark notification as read",
+      error: error.message,
+    });
+  }
+};
+
+export {
+  getNotifications,
+  getUnreadNotificationCount,
+  updateNotificationReadStatus,
+};
