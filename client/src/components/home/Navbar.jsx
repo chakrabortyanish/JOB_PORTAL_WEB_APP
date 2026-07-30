@@ -6,6 +6,7 @@ import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 
 import { IoNotificationsOutline } from "react-icons/io5";
+import { GiCrossedBones } from "react-icons/gi";
 
 import { useAuth } from "@clerk/clerk-react";
 
@@ -95,7 +96,7 @@ const Navbar = () => {
               >
                 <IoNotificationsOutline fontSize={22} />
                 {/* Unread Count */}
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5">
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full py-[1px] px-1.5">
                   {notifications.length}
                 </span>
               </button>
@@ -130,50 +131,76 @@ const Navbar = () => {
 
       {open && (
         <div
-          className={`fixed top-0 right-0 h-screen w-[360px] bg-white shadow-2xl z-100 transition-transform duration-300 ${
-            open ? "translate-x-0" : "translate-x-full"
+  className={`fixed top-0 right-0 h-screen w-[360px] bg-white shadow-xl z-50 border-l border-gray-100 transition-transform duration-300 ease-in-out ${
+    open ? "translate-x-0" : "translate-x-full"
+  }`}
+>
+  {/* Header */}
+  <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+    <div className="flex items-center gap-2.5">
+      <h2 className="text-base font-bold text-gray-900 tracking-tight">
+        Notifications
+      </h2>
+      {notifications.some((n) => !n.isRead) && (
+        <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+      )}
+    </div>
+
+    <button
+      onClick={() => setOpen(false)}
+      className="p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors cursor-pointer"
+      aria-label="Close notifications"
+    >
+      <GiCrossedBones fontSize={16} />
+    </button>
+  </div>
+
+  {/* Notification List */}
+  <div className="h-[calc(100vh-65px)] overflow-y-auto divide-y divide-gray-100">
+    {notifications.length === 0 ? (
+      <div className="flex flex-col justify-center items-center h-full text-gray-400 px-6 text-center">
+        <p className="text-sm font-medium">No notifications yet</p>
+      </div>
+    ) : (
+      notifications.map((item) => (
+        <div
+          key={item._id}
+          className={`group relative p-4 transition-colors duration-150 hover:bg-gray-50/80 cursor-pointer ${
+            !item.isRead ? "bg-blue-50/40" : "bg-white"
           }`}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between px-5 py-4 border-b">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold">Notifications</h2>
-            </div>
+          {/* Subtle unread indicator bar on the left */}
+          {!item.isRead && (
+            <span className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 rounded-r" />
+          )}
 
-            <button
-              onClick={() => setOpen(false)}
-              className="p-2 rounded-full hover:bg-gray-100"
+          <div className="flex items-start justify-between gap-2">
+            <h3
+              className={`text-sm tracking-tight ${
+                !item.isRead
+                  ? "font-semibold text-gray-900"
+                  : "font-medium text-gray-700"
+              }`}
             >
-              x
-            </button>
+              {item.title}
+            </h3>
           </div>
 
-          {/* Notification List */}
-          <div className="h-[calc(100vh-72px)] overflow-y-auto">
-            {notifications.length === 0 ? (
-              <div className="flex justify-center items-center h-full text-gray-500">
-                No notifications
-              </div>
-            ) : (
-              notifications.map((item) => (
-                <div
-                  key={item._id}
-                  className={`border-b p-4 ${
-                    !item.isRead ? "bg-blue-50" : "bg-white"
-                  }`}
-                >
-                  <h3 className="font-semibold">{item.title}</h3>
+          <p className="text-xs text-gray-600 mt-1 leading-relaxed line-clamp-2">
+            {item.message}
+          </p>
 
-                  <p className="text-sm text-gray-600 mt-1">{item.message}</p>
-
-                  <p className="text-xs text-gray-400 mt-2">
-                    {new Date(item.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
+          <p className="text-[11px] font-medium text-gray-400 mt-2">
+            {new Date(item.createdAt).toLocaleString(undefined, {
+              dateStyle: "short",
+              timeStyle: "short",
+            })}
+          </p>
         </div>
+      ))
+    )}
+  </div>
+</div>
       )}
     </div>
   );
