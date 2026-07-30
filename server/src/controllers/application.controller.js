@@ -1,5 +1,6 @@
 import {Application} from "../models/application.js";
 import {Job} from "../models/job.js";
+import {Notification } from "../models/notification.model.js";
 
 /* Candidate applies to job */
 export const applyJob = async (req, res) => {
@@ -86,6 +87,25 @@ export const getReceivedApplications = async (req, res) => {
 };
 
 /* Recruiter update status */
+function getNotificationMessage(status, job) {
+  switch (status) {
+    // case "Shortlisted":
+    //   return "Congratulations! You have been shortlisted.";
+
+    case "rejected":
+      return `Unfortunately, your application was not selected for ${job}.`;
+
+    // case "Interview":
+    //   return "Your interview has been scheduled.";
+
+    case "selected":
+      return `Congratulations! You have been selected for ${job}.`;
+
+    default:
+      return `Your application status has been updated to ${status} for ${job}.`;
+  }
+}
+
 export const updateApplicationStatus = async (req, res) => {
   try {
     const { id } = req.params;   // 👈 this is the application id
@@ -95,7 +115,18 @@ export const updateApplicationStatus = async (req, res) => {
       id,
       { status },
       { new: true }
-    );
+    ).populate("jobId");
+
+    if (!application) {
+      return res.status(404).json({ success: false, message: "Application not found" });
+    }
+
+    await Notification.create({
+      receiverId: application.candidateId, // <-- Candidate Clerk ID
+      title: "Application Update",
+      message: getNotificationMessage(status, application.jobId.title),
+      type: "APPLICATION_STATUS",
+    });
 
     res.status(200).json({
       success: true,
