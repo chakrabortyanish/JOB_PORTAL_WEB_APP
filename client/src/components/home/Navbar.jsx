@@ -18,6 +18,8 @@ const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user } = useUser();
 
+  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
+
   // console.log("Navbar user:", user.id);
 
   const handleNavigate = () => {
@@ -53,7 +55,33 @@ const Navbar = () => {
     }
   };
 
+  // fetch unread nofications count
+  const getUnreadNotificationCount = async () => {
+    const token = await getToken();
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/notifications/unread-count`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        },
+      );
+      const data = await res.json();
+      console.log("data: ", data);
+      if (data.success) {
+        setUnreadNotificationCount(data.count);
+      }
+
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  }
   useEffect(() => {
+    getUnreadNotificationCount();
     handleNotification();
   }, []);
 
@@ -97,7 +125,7 @@ const Navbar = () => {
                 <IoNotificationsOutline fontSize={22} />
                 {/* Unread Count */}
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full py-[1px] px-1.5">
-                  {notifications.length}
+                  {unreadNotificationCount}
                 </span>
               </button>
 
