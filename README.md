@@ -1,5 +1,5 @@
 # CAREERONIX
-#### A Job Portal web application currently under development. The project focuses on building a secure recruiter dashboard, authentication system, and scalable backend architecture. 
+#### A modern web application for job searching and recruitment management. Built to deliver a smooth user experience, it includes JWT based authentication, an intuitive recruiter dashboard, and an automated notification system.
 
 
 ### LIVE LINK: https://job-portal-web-app-mauve.vercel.app/<br/>
